@@ -104,13 +104,14 @@ static int Liconv(lua_State *L)
     size_t ret = -1;
 
     outbuf = (char*) malloc(ibleft * sizeof(char));
-    outbufs = outbuf;
     if(outbuf == NULL)
     {
         lua_pushstring(L, "");
         lua_pushnumber(L, ERROR_NO_MEMORY);
         return 2;
     }
+    outbufs = outbuf;
+    printf("M ibleft=%d, bsize=%d, obleft=%d\n", ibleft, bsize, obleft);
 
     do
     {
@@ -135,8 +136,15 @@ static int Liconv(lua_State *L)
             {
                 bsize += 2 * ibleft;
                 obleft += 2 * ibleft;
+                printf("R ibleft=%d, bsize=%d, obleft=%d\n", ibleft, bsize,
+                    obleft);
                 outbufs = (char*) realloc(outbufs, bsize * sizeof(char));
-                puts("REALOQUEI");
+                if(outbufs == NULL)
+                {
+                    lua_pushstring(L, "");
+                    lua_pushnumber(L, ERROR_NO_MEMORY);
+                    return 2;
+                }
             }
             else
             {
