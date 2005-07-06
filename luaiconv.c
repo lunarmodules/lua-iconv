@@ -99,12 +99,12 @@ static int Liconv(lua_State *L)
     char *inbuf = (char*) getstring(L, 2);
     char *outbuf;
     char *outbufs;
-    size_t bsize = 4 * ibleft; /* Try to avoid concatenations on stack */
-    size_t obleft = bsize;
+    size_t obsize = ibleft; /* Try to avoid concatenations on stack */
+    size_t obleft = obsize;
     size_t ret = -1;
     int hasone = 0;
 
-    outbuf = (char*) malloc(bsize * sizeof(char));
+    outbuf = (char*) malloc(obsize * sizeof(char));
     if(outbuf == NULL)
     {
         lua_pushstring(L, "");
@@ -118,40 +118,29 @@ static int Liconv(lua_State *L)
         ret = iconv(cd, &inbuf, &ibleft, &outbuf, &obleft);
         if(ret == (size_t)(-1))
         {
+            lua_pushlstring(L, outbufs, obsize - obleft);
+            if(hasone == 1)
+                lua_concat(L, 2);
+            hasone = 1;
             if(errno == EILSEQ)
             {
-                lua_pushlstring(L, outbufs, bsize-obleft);
-                if(hasone == 1)
-                    lua_concat(L, 2);
-                hasone = 1;
                 lua_pushnumber(L, ERROR_INVALID);
                 free(outbufs);
                 return 2;   /* Invalid character sequence */
             }
             else if(errno == EINVAL)
             {
-                lua_pushlstring(L, outbufs, bsize-obleft);
-                if(hasone == 1)
-                    lua_concat(L, 2);
-                hasone = 1;
                 lua_pushnumber(L, ERROR_INCOMPLETE);
                 free(outbufs);
                 return 2;   /* Incomplete character sequence */
             }
             else if(errno == E2BIG)
             {
-                lua_pushlstring(L, outbufs, bsize-obleft);
-                if(hasone == 1)
-                    lua_concat(L, 2);
-                hasone = 1;
-                obleft = bsize;
+                obleft = obsize;    
+                outbuf = outbufs;
             }
             else
             {
-                lua_pushlstring(L, outbufs, bsize-obleft);
-                if(hasone == 1)
-                    lua_concat(L, 2);
-                hasone = 1;
                 lua_pushnumber(L, ERROR_UNKNOWN);
                 free(outbufs);
                 return 2; /* Unknown error */
@@ -160,7 +149,7 @@ static int Liconv(lua_State *L)
     }
     while(ret != (size_t) 0);
 
-    lua_pushlstring(L, outbufs, bsize-obleft);
+    lua_pushlstring(L, outbufs, obsize - obleft);
     if(hasone == 1)
         lua_concat(L, 2);
     free(outbufs);
