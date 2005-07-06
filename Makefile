@@ -21,12 +21,13 @@
 CC=gcc
 OUTFILE=libluaiconv.so
 CFLAGS=-Wall
-LFLAGS=-shared -llua -liconv
+LFLAGS=-shared -llua 
+#LFLAGS=$(LFLAGS) -liconv
 
 
 all: $(OUTFILE)
 
-libluagd.so: luaiconv.c
+$(OUTFILE): luaiconv.c
 	$(CC) -o $(OUTFILE) $(CFLAGS) $(LFLAGS) luaiconv.c
 
 install: $(OUTFILE)

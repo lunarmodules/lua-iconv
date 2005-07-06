@@ -64,7 +64,7 @@ static int Linconv_open(lua_State *L)
 {
     const char *fromcode = getstring(L, 1);
     const char *tocode = getstring(L, 2);
-    iconv_t cd iconv_open(tocode, fromcode);
+    iconv_t cd = iconv_open(tocode, fromcode);
     if(cd != (iconv_t)(-1))
         push_iconv_t(L, cd);    /* ok */
     else
@@ -73,7 +73,7 @@ static int Linconv_open(lua_State *L)
 }
 
 
-static in Linconv_close(lua_State *L)
+static int Liconv_close(lua_State *L)
 {
     iconv_t cd = get_iconv_t(L, 1);
     if(iconv_close(cd) == 0)
