@@ -7,8 +7,8 @@ cd = iconv.new("utf-8", "iso-8859-1")
 
 assert(cd, "Invalid conversion")
 
--- ret, err = cd:iconv("Isso é um teste com acentuação")
-ret, err = cd:iconv("çãÃÉÍÓÚÇÑÿ")
+ret, err = cd:iconv("Isso é um teste com acentuação")
+-- ret, err = cd:iconv("çãÃÉÍÓÚÇÑÿ                                ")
 
 if err == iconv.ERROR_INCOMPLETE then
   print("Error: Incomplete input.")
