@@ -99,7 +99,7 @@ static int Liconv(lua_State *L)
     char *inbuf = (char*) getstring(L, 2);
     char *outbuf;
     char *outbufs;
-    size_t obsize = ibleft; /* Try to avoid concatenations on stack */
+    size_t obsize = (ibleft > 256) ? ibleft : 256; 
     size_t obleft = obsize;
     size_t ret = -1;
     int hasone = 0;
