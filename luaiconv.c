@@ -43,15 +43,11 @@
 #define ERROR_UNKNOWN       4
 
 
-
-
 /* Table assumed on top */
 #define tblseticons(L, c, v)    \
     lua_pushliteral(L, c);      \
     lua_pushnumber(L, v);       \
     lua_settable(L, -3);
-
-
 
 
 
@@ -75,8 +71,6 @@ static iconv_t get_iconv_t(lua_State *L, int i)
     luaL_typerror(L, i, ICONV_TYPENAME);
     return NULL;
 }
-
-
 
 
 static int Liconv_open(lua_State *L)
@@ -166,12 +160,6 @@ static int Liconv_close(lua_State *L)
         lua_pushnil(L);         /* erro */
     return 1;
 }
-
-    
-
-
-
-
 
 
 static const luaL_reg inconvFuncs[] =
