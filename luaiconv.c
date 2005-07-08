@@ -150,6 +150,45 @@ static int Liconv(lua_State *L)
     return 1;   /* Done */
 }
 
+#ifdef HAS_ICONVLIST
+
+static int push_one(unsigned int cnt, char *names[], void *data)
+{
+    lua_State *L = (lua_State*) data;
+    int n = (int) lua_tonumber(L, -1);
+    int i;
+
+    /* Stack: <tbl> n */
+    lua_remove(L, -1);    
+    for(i = 0; i < cnt; i++)
+    {
+        /* Stack> <tbl> */
+        lua_pushnumber(L, n++);
+        lua_pushstring(L, names[i]);
+        /* Stack: <tbl> n <str> */
+        lua_settable(L, -3);
+    }
+    lua_pushnumber(L, n);
+    /* Stack: <tbl> n */
+    return 0;   
+}
+
+
+static int Liconvlist(lua_State *L)
+{
+    lua_newtable(L);
+    lua_pushnumber(L, 1);
+
+    /* Stack:   <tbl> 1 */
+    iconvlist(push_one, (void*) L);
+
+    /* Stack:   <tbl> n */
+    lua_remove(L, -1);
+    return 1;
+}
+
+#endif
+
 
 static int Liconv_close(lua_State *L)
 {
@@ -167,6 +206,9 @@ static const luaL_reg inconvFuncs[] =
     { "open",   Liconv_open },
     { "new",    Liconv_open },
     { "iconv",  Liconv },
+#ifdef HAS_ICONVLIST
+    { "list",   Liconvlist },
+#endif
     { NULL, NULL }
 };
 

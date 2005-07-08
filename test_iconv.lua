@@ -1,4 +1,3 @@
-
 assert(loadlib("./libluaiconv.so", "luaopen_iconv"))()
 
 cd = iconv.new("utf-8", "iso-8859-1")
@@ -8,7 +7,7 @@ cd = iconv.new("utf-8", "iso-8859-1")
 assert(cd, "Invalid conversion")
 
 --ret, err = cd:iconv("Isso È um teste com acentuaÁ„o")
-ret, err = cd:iconv("Á")
+ret, err = cd:iconv("√¡…Õ”⁄«—›‘’")
 
 if err == iconv.ERROR_INCOMPLETE then
   print("Error: Incomplete input.")
