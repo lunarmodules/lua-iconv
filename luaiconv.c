@@ -2,21 +2,24 @@
  * luaiconv - Performs character set conversions in Lua
  * (c) 2005 Alexandre Erwin Ittner <aittner@netuno.com.br>
  *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  *
  * $Id$
@@ -34,14 +37,18 @@
 #define LIB_NAME                "iconv"
 #define ICONV_TYPENAME          "iconv_t"
 
-#define getstring           luaL_checkstring
-#define getostring(L, i)    luaL_optstring(L, i, NULL)
+/* Compatibility between Lua 5.1+ and Lua 5.0 */
+#ifndef LUA_VERSION_NUM
+#define LUA_VERSION_NUM 0
+#endif
+#if LUA_VERSION_NUM < 501
+#define luaL_register luaL_openlib
+#endif
 
-#define ERROR_NO_MEMORY     1
-#define ERROR_INVALID       2
-#define ERROR_INCOMPLETE    3
-#define ERROR_UNKNOWN       4
 
+/* Emulates lua_(un)boxpointer from Lua 5.0 (don't exists on Lua 5.1) */
+#define boxptr(L, p)   (*(void**)(lua_newuserdata(L, sizeof(void*))) = (p))
+#define unboxptr(L, i) (*(void**)(lua_touserdata(L, i)))
 
 /* Table assumed on top */
 #define tblseticons(L, c, v)    \
@@ -51,9 +58,15 @@
 
 
 
+#define ERROR_NO_MEMORY     1
+#define ERROR_INVALID       2
+#define ERROR_INCOMPLETE    3
+#define ERROR_UNKNOWN       4
+
+
 static void push_iconv_t(lua_State *L, iconv_t cd)
 {
-    lua_boxpointer(L, cd);
+    boxptr(L, cd);
     luaL_getmetatable(L, ICONV_TYPENAME);
     lua_setmetatable(L, -2);
 }
@@ -63,7 +76,7 @@ static iconv_t get_iconv_t(lua_State *L, int i)
 {
     if(luaL_checkudata(L, i, ICONV_TYPENAME) != NULL)
     {
-        iconv_t cd = lua_unboxpointer(L, i);
+        iconv_t cd = unboxptr(L, i);
         if(cd == (iconv_t) NULL)
             luaL_error(L, "attempt to use an invalid " ICONV_TYPENAME);
         return cd;
@@ -75,8 +88,8 @@ static iconv_t get_iconv_t(lua_State *L, int i)
 
 static int Liconv_open(lua_State *L)
 {
-    const char *tocode = getstring(L, 1);
-    const char *fromcode = getstring(L, 2);
+    const char *tocode = luaL_checkstring(L, 1);
+    const char *fromcode = luaL_checkstring(L, 2);
     iconv_t cd = iconv_open(tocode, fromcode);
     if(cd != (iconv_t)(-1))
         push_iconv_t(L, cd);    /* ok */
@@ -90,7 +103,7 @@ static int Liconv(lua_State *L)
 {
     iconv_t cd = get_iconv_t(L, 1);
     size_t ibleft = lua_strlen(L, 2);
-    char *inbuf = (char*) getstring(L, 2);
+    char *inbuf = (char*) luaL_checkstring(L, 2);
     char *outbuf;
     char *outbufs;
     size_t obsize = (ibleft > 256) ? ibleft : 256; 
@@ -150,7 +163,9 @@ static int Liconv(lua_State *L)
     return 1;   /* Done */
 }
 
-#ifdef HAS_ICONVLIST
+
+
+#ifdef HAS_ICONVLIST /* a GNU extension? */
 
 static int push_one(unsigned int cnt, char *names[], void *data)
 {
@@ -222,20 +237,18 @@ static const luaL_reg iconvMT[] =
 
 int luaopen_iconv(lua_State *L)
 {
-    luaL_openlib(L, LIB_NAME, inconvFuncs, 0);
+    luaL_register(L, LIB_NAME, inconvFuncs, 0);
 
     tblseticons(L, "ERROR_NO_MEMORY",   ERROR_NO_MEMORY);
     tblseticons(L, "ERROR_INVALID",     ERROR_INVALID);
     tblseticons(L, "ERROR_INCOMPLETE",  ERROR_INCOMPLETE);
     tblseticons(L, "ERROR_UNKNOWN",     ERROR_UNKNOWN);
 
-    lua_pushliteral(L, "metatable");    /* metatable */
     luaL_newmetatable(L, ICONV_TYPENAME);
     lua_pushliteral(L, "__index");
-    lua_pushvalue(L, -4);
+    lua_pushvalue(L, -3);
     lua_settable(L, -3);
     luaL_openlib(L, NULL, iconvMT, 0);
-    lua_settable(L, -3);
 
-    return 0;
+    return 1;
 }
