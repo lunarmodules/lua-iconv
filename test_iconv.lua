@@ -1,6 +1,8 @@
 require "iconv"
 
--- WARNING! This code assumes an iso-8859-1 terminal!
+-- Set your terminal encoding here
+local termcs = "iso-8859-1"
+
 
 local iso88591 = [[
 Ao longe, ao luar
@@ -58,7 +60,6 @@ local utf16 = "\255\254\65\0\111\0\32\0\108\0\111\0\110\0\103\0\101\0\44\0\32"
 .. "\97\0\10\0\10\0\32\0\32\0\32\0\32\0\45\0\45\0\32\0\70\0\101\0\114\0\110"
 .. "\0\97\0\110\0\100\0\111\0\32\0\80\0\101\0\115\0\115\0\111\0\97\0\10\0"
 
-
 -- Bizarre EBCDIC-CP-ES encoding.
 local ebcdic = "\193\150\64\147\150\149\135\133\107\64\129\150\64\147\164\129"
 .. "\153\37\213\150\64\153\137\150\64\164\148\129\64\165\133\147\129\37\226"
@@ -99,9 +100,9 @@ function check_one(to, from, text)
   print(ostr)
 end
 
-check_one("us-ascii", "iso8859-1", iso88591)
-check_one("iso8859-1", "utf8", utf8)
-check_one("iso8859-1", "utf16", utf16)
-check_one("iso8859-1", "EBCDIC-CP-ES", ebcdic)
+check_one(termcs, "iso-8859-1", iso88591)
+check_one(termcs, "utf8", utf8)
+check_one(termcs, "utf16", utf16)
+check_one(termcs, "EBCDIC-CP-ES", ebcdic)
 
 
