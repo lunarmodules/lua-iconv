@@ -46,7 +46,7 @@
 #define LUA_VERSION_NUM 0
 #endif
 #if LUA_VERSION_NUM < 501
-#define luaL_register luaL_openlib
+#define luaL_register(a, b, c) luaL_openlib((a), (b), (c), 0)
 #endif
 
 
@@ -241,7 +241,7 @@ static const luaL_reg iconvMT[] =
 
 int luaopen_iconv(lua_State *L)
 {
-    luaL_register(L, LIB_NAME, inconvFuncs, 0);
+    luaL_register(L, LIB_NAME, inconvFuncs);
 
     tblseticons(L, "ERROR_NO_MEMORY",   ERROR_NO_MEMORY);
     tblseticons(L, "ERROR_INVALID",     ERROR_INVALID);
