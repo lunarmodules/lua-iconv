@@ -1,0 +1,135 @@
+
+        Lua-iconv: performs character set conversions in Lua
+       (c) 2005 Alexandre Erwin Ittner <aittner@netuno.com.br>
+              Project page: http://lua-iconv.luaforge.net/
+
+
+
+
+=== INTRODUCTION ===
+
+Lua-iconv is a Lua binding to the POSIX 'iconv' library. The iconv
+library converts the sequence of characters from one codeset, into a
+sequence of corresponding characters in another codeset. The codesets
+are those specified in the iconv.new() call that returned the conversion
+descriptor, cd.
+
+Details regarding iconv may be obtained from:
+http://www.opengroup.org/onlinepubs/007908799/xsh/iconv.h.html
+
+
+
+=== LICENSE ===
+
+Lua-iconv is (c) 2005 Alexandre Erwin Ittner <aittner@netuno.com.br>
+
+Lua-iconv is copyrighted free software: it can be used for both academic
+and commercial purposes at absolutely no cost. There are no royalties
+or GNU-like "copyleft" restrictions. The legal details are below:
+
+   Permission is hereby granted, free of charge, to any person obtaining
+   a copy of this software and associated documentation files (the
+   "Software"), to deal in the Software without restriction, including
+   without limitation the rights to use, copy, modify, merge, publish,
+   distribute, sublicense, and/or sell copies of the Software, and to
+   permit persons to whom the Software is furnished to do so, subject
+   to the following conditions:
+
+   The above copyright notice and this permission notice shall be
+   included in all copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+   IN NO EVENT SHALL THE AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY
+   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+   If you use this package in a product, an acknowledgment in the product
+   documentation would be greatly appreciated (but it is not required).
+
+
+
+=== DOWNLOAD AND INSTALLATION ===
+
+Lua-iconv can be obtained from its Luaforge project page:
+http://lua-iconv.luaforge.net/
+
+Lua-iconv must be compiled as a shared object and loaded by the Lua
+interpreter using the 'loadlib' facility (or the new module system in
+Lua 5.1). To compile the library, just fire up your favourite shell, untar
+the distribution package and type, as root, within the program directory:
+
+    make install
+
+The library will be compiled and installed on the /usr/lib/ directory.
+
+To install the library with Lua 5.1 and above just type
+
+    make install51
+
+This will cause the Makefile to run a Lua script that will install the
+library into a directory from package.cpath, allowing you to use the
+package system to load the library.
+
+
+
+=== LOADING AND INITIALIZATION ===
+
+Lua-iconv is a shared library that exports a single function called
+luaopen_iconv that must be called by the Lua interpreter. You must
+use loadlib function to for that. Using Lua 5.0, under Unix and with
+libluaiconv.so on your LUA_PATH (or also your LD_PATH) you can just do:
+
+    assert(loadlib("libluaiconv.so", "luaopen_iconv"))()
+
+And, under Windows and with libluaiconv.dll on your path, you can do
+
+    assert(loadlib("libluaiconv.dll", "luaopen_iconv"))()
+
+On the Lua 5.1, Lua-iconv uses the new package system that allows you
+to simply do a
+
+    require "gd"
+
+call to load up the library (that was installed on the right place by
+install51.lua).
+
+
+
+=== USAGE ===
+
+cd = iconv.new(to, from)
+cd = iconv.open(to, from)
+
+    Opens a new conversion descriptor, from the 'from' charset to the
+    'to' charset. Concatenating "//TRANSLIT" to the first argument will
+    enable character transliteration and concatenating "//IGNORE" to
+    the first argument will cause iconv to ignore any invalid characters
+    found in the input string.
+
+    This function returns a new converter or nil on error.
+
+
+nstr, err = cd:iconv(str)
+
+    Converts the 'str' string to the desired charset. This method always
+    returns two arguments: the converted string and an error code, which
+    may have any of the following values:
+
+    nil
+        No error. Conversion was succeful.
+
+    iconv.ERROR_NO_MEMORY
+        Failed to allocate enough memory in the conversion process.
+
+    iconv.ERROR_INVALID
+        An invalid character was found in the input sequence.
+
+    iconv.ERROR_INCOMPLETE
+        An incomplete character was found in the input sequence.
+        
+    iconv.ERROR_UNKNOWN
+        There was an unknown error.
+

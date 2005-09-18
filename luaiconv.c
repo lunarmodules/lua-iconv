@@ -16,11 +16,13 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * IN NO EVENT SHALL THE AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
+ * If you use this package in a product, an acknowledgment in the product
+ * documentation would be greatly appreciated (but it is not required).
  *
  * $Id$
  *
@@ -35,7 +37,9 @@
 #include <errno.h>
 
 #define LIB_NAME                "iconv"
+#define LIB_VERSION             LIB_NAME " r1"
 #define ICONV_TYPENAME          "iconv_t"
+
 
 /* Compatibility between Lua 5.1+ and Lua 5.0 */
 #ifndef LUA_VERSION_NUM
@@ -244,11 +248,16 @@ int luaopen_iconv(lua_State *L)
     tblseticons(L, "ERROR_INCOMPLETE",  ERROR_INCOMPLETE);
     tblseticons(L, "ERROR_UNKNOWN",     ERROR_UNKNOWN);
 
+    lua_pushliteral(L, "VERSION");
+    lua_pushstring(L, LIB_VERSION);
+    lua_settable(L, -3);
+
     luaL_newmetatable(L, ICONV_TYPENAME);
     lua_pushliteral(L, "__index");
     lua_pushvalue(L, -3);
     lua_settable(L, -3);
     luaL_openlib(L, NULL, iconvMT, 0);
+    lua_pop(L, 1);
 
     return 1;
 }
