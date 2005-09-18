@@ -9,7 +9,7 @@
 === INTRODUCTION ===
 
 Lua-iconv is a Lua binding to the POSIX 'iconv' library. The iconv
-library converts the sequence of characters from one codeset, into a
+library converts a sequence of characters from one codeset into a
 sequence of corresponding characters in another codeset. The codesets
 are those specified in the iconv.new() call that returned the conversion
 descriptor, cd.
