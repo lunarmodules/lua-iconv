@@ -1,27 +1,23 @@
 require "iconv"
 
 -- Set your terminal encoding here
-local termcs = "iso-8859-1"
+-- local termcs = "iso-8859-1"
+local termcs = "utf-8"
 
-
-local iso88591 = [[
-Ao longe, ao luar
-No rio uma vela
-Serena a passar,
-Que é que me revela
-
-Não sei, mas mue ser
-Tornou-se-me estranho,
-E eu sonho sem ver
-Os sonhos que tenho.
-
-Que angústia me enlaça?
-Que amor não se explica?
-É a vela que passa
-Na noite que fica
-
-    -- Fernando Pessoa]]
-
+local iso88591 = "\65\111\32\108\111\110\103\101\44\32\97\111\32\108\117"
+.. "\97\114\10\78\111\32\114\105\111\32\117\109\97\32\118\101\108\97\10\83"
+.. "\101\114\101\110\97\32\97\32\112\97\115\115\97\114\44\10\81\117\101\32"
+.. "\233\32\113\117\101\32\109\101\32\114\101\118\101\108\97\10\10\78\227"
+.. "\111\32\115\101\105\44\32\109\97\115\32\109\117\101\32\115\101\114\10"
+.. "\84\111\114\110\111\117\45\115\101\45\109\101\32\101\115\116\114\97\110"
+.. "\104\111\44\10\69\32\101\117\32\115\111\110\104\111\32\115\101\109\32"
+.. "\118\101\114\10\79\115\32\115\111\110\104\111\115\32\113\117\101\32\116"
+.. "\101\110\104\111\46\10\10\81\117\101\32\97\110\103\250\115\116\105\97"
+.. "\32\109\101\32\101\110\108\97\231\97\63\10\81\117\101\32\97\109\111\114"
+.. "\32\110\227\111\32\115\101\32\101\120\112\108\105\99\97\63\10\201\32\97"
+.. "\32\118\101\108\97\32\113\117\101\32\112\97\115\115\97\10\78\97\32\110"
+.. "\111\105\116\101\32\113\117\101\32\102\105\99\97\10\10\32\32\32\32\45"
+.. "\45\32\70\101\114\110\97\110\100\111\32\80\101\115\115\111\97\10"
 
 local utf8 = "\65\111\32\108\111\110\103\101\44\32\97\111\32\108\117\97\114"
 .. "\10\78\111\32\114\105\111\32\117\109\97\32\118\101\108\97\10\83\101\114"
@@ -81,10 +77,7 @@ local ebcdic = "\193\150\64\147\150\149\135\133\107\64\129\150\64\147\164\129"
 function check_one(to, from, text)
   print("\n-- Testing conversion from " .. from .. " to " .. to)
   local cd = iconv.new(to .. "//TRANSLIT", from)
-  if not cd then
-    printf("FAILED!")
-    return
-  end
+  assert(cd, "Failed to create a converter object.")
   local ostr, err = cd:iconv(text)
 
   if err == iconv.ERROR_INCOMPLETE then
@@ -96,7 +89,6 @@ function check_one(to, from, text)
   elseif err == iconv.ERROR_UNKNOWN then
     print("ERROR: There was an unknown error.")
   end
-
   print(ostr)
 end
 
@@ -104,5 +96,4 @@ check_one(termcs, "iso-8859-1", iso88591)
 check_one(termcs, "utf8", utf8)
 check_one(termcs, "utf16", utf16)
 check_one(termcs, "EBCDIC-CP-ES", ebcdic)
-
 

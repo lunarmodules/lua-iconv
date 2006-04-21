@@ -1,9 +1,7 @@
 
         Lua-iconv: performs character set conversions in Lua
-       (c) 2005 Alexandre Erwin Ittner <aittner@netuno.com.br>
+     (c) 2005-06 Alexandre Erwin Ittner <aittner@netuno.com.br>
               Project page: http://lua-iconv.luaforge.net/
-
-
 
 
 === INTRODUCTION ===
@@ -14,6 +12,9 @@ sequence of corresponding characters in another codeset. The codesets
 are those specified in the iconv.new() call that returned the conversion
 descriptor, cd.
 
+Lua-iconv r2 *requires* Lua 5.1. If you are using Lua 5.0, please use the
+previous version (lua-iconv-r1).
+
 Details regarding iconv may be obtained from:
 http://www.opengroup.org/onlinepubs/007908799/xsh/iconv.h.html
 
@@ -21,7 +22,7 @@ http://www.opengroup.org/onlinepubs/007908799/xsh/iconv.h.html
 
 === LICENSE ===
 
-Lua-iconv is (c) 2005 Alexandre Erwin Ittner <aittner@netuno.com.br>
+Lua-iconv is (c) 2005-06 Alexandre Erwin Ittner <aittner@netuno.com.br>
 
 Lua-iconv is copyrighted free software: it can be used for both academic
 and commercial purposes at absolutely no cost. There are no royalties
@@ -51,50 +52,38 @@ or GNU-like "copyleft" restrictions. The legal details are below:
 
 
 
-=== DOWNLOAD AND INSTALLATION ===
+=== DOWNLOAD, COMPILATION AND INSTALLATION ===
 
-Lua-iconv can be obtained from its Luaforge project page:
+Lua-iconv can be obtained from its LuaForge project page:
 http://lua-iconv.luaforge.net/
 
 Lua-iconv must be compiled as a shared object and loaded by the Lua
-interpreter using the 'loadlib' facility (or the new module system in
-Lua 5.1). To compile the library, just fire up your favourite shell, untar
-the distribution package and type, as root, within the program directory:
+interpreter using the new module system in Lua 5.1. 
+
+If you are using a system with pkg-config (as many Linux distributions and
+Unix flavors) just fire up your favourite shell, untar the distribution
+package and type, as root, within the program directory:
 
     make install
 
-The library will be compiled and installed on the /usr/lib/ directory.
+The library will be compiled and installed on the in the correct path (that
+is defined in lua5.1.pc.
 
-To install the library with Lua 5.1 and above just type
-
-    make install51
-
-This will cause the Makefile to run a Lua script that will install the
-library into a directory from package.cpath, allowing you to use the
-package system to load the library.
+Compiling on systems without pkg-config requires manual changes on the
+Makefile.
 
 
 
 === LOADING AND INITIALIZATION ===
 
 Lua-iconv is a shared library that exports a single function called
-luaopen_iconv that must be called by the Lua interpreter. You must
-use loadlib function to for that. Using Lua 5.0, under Unix and with
-libluaiconv.so on your LUA_PATH (or also your LD_PATH) you can just do:
+luaopen_iconv that must be called by the Lua interpreter. Lua 5.1
+uses the new package system, so you can simply do a
 
-    assert(loadlib("libluaiconv.so", "luaopen_iconv"))()
+    require "iconv"
 
-And, under Windows and with libluaiconv.dll on your path, you can do
-
-    assert(loadlib("libluaiconv.dll", "luaopen_iconv"))()
-
-On the Lua 5.1, Lua-iconv uses the new package system that allows you
-to simply do a
-
-    require "gd"
-
-call to load up the library (that was installed on the right place by
-install51.lua).
+call to load up the library (that, of course, must be installed in a
+directory from package.cpath).
 
 
 
