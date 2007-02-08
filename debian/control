@@ -10,6 +10,6 @@ Architecture: any
 Depends: ${shlibs:Depends}
 Recommends: lua5.1
 Description: iconv bindings for the Lua Programming Language
-  Lua-iconv is a Lua binding to the POSIX 'iconv' library, that converts a
-  sequence of characters from one codeset into a sequence of corresponding
-  characters in another codeset.
+  Lua-iconv is POSIX 'iconv' binding for the Lua Programming Language. It
+  converts a sequence of characters from one codeset into a sequence of
+  corresponding characters in another codeset.

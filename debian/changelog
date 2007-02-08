@@ -1,6 +1,6 @@
-lua-iconv (3r3-1) unstable; urgency=low
+lua-iconv (0.r3-1) unstable; urgency=low
 
-  * Initial release Closes: #nnnn  (nnnn is the bug number of your ITP)
+  * First release in .deb format.
 
  -- Alexandre Erwin Ittner <aittner@netuno.com.br>  Wed,  3 Feb 2007 00:20:09 -0200
 

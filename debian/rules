@@ -8,7 +8,7 @@
 #export DH_VERBOSE=1
 
 # This is the debhelper compatability version to use.
-export DH_COMPAT=3
+export DH_COMPAT=4
 
 LUAPKG=lua5.1
 INSTALL_PATH=`pkg-config $(LUAPKG) --variable=INSTALL_CMOD`
@@ -42,7 +42,7 @@ install: build
 	dh_installdirs
 
 	mkdir -p debian/lua-iconv/usr/share/doc/lua-iconv
-	mkdir -p debian/lua-iconvs/$(INSTALL_PATH)
+	mkdir -p debian/lua-iconv/$(INSTALL_PATH)
 
 	cp iconv.so debian/lua-iconv/$(INSTALL_PATH)
 	cp README COPYING test_iconv.lua debian/lua-iconv/usr/share/doc/lua-iconv/

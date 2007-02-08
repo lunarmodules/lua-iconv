@@ -1,19 +1,19 @@
 
         Lua-iconv: performs character set conversions in Lua
-     (c) 2005-06 Alexandre Erwin Ittner <aittner@netuno.com.br>
-              Project page: http://lua-iconv.luaforge.net/
+     (c) 2005-07 Alexandre Erwin Ittner <aittner@netuno.com.br>
+           Project page: http://lua-iconv.luaforge.net/
 
 
 === INTRODUCTION ===
 
-Lua-iconv is a Lua binding to the POSIX 'iconv' library. The iconv
-library converts a sequence of characters from one codeset into a
+Lua-iconv is POSIX 'iconv' binding for the Lua Programming Language. The
+iconv library converts a sequence of characters from one codeset into a
 sequence of corresponding characters in another codeset. The codesets
 are those specified in the iconv.new() call that returned the conversion
 descriptor, cd.
 
-Lua-iconv r2 *requires* Lua 5.1. If you are using Lua 5.0, please use the
-previous version (lua-iconv-r1).
+Lua-iconv r3 *requires* Lua 5.1. If you are using Lua 5.0, please use the
+first release (lua-iconv-r1).
 
 Details regarding iconv may be obtained from:
 http://www.opengroup.org/onlinepubs/007908799/xsh/iconv.h.html
@@ -22,7 +22,7 @@ http://www.opengroup.org/onlinepubs/007908799/xsh/iconv.h.html
 
 === LICENSE ===
 
-Lua-iconv is (c) 2005-06 Alexandre Erwin Ittner <aittner@netuno.com.br>
+Lua-iconv is (c) 2005-07 Alexandre Erwin Ittner <aittner@netuno.com.br>
 
 Lua-iconv is copyrighted free software: it can be used for both academic
 and commercial purposes at absolutely no cost. There are no royalties
@@ -121,4 +121,7 @@ nstr, err = cd:iconv(str)
         
     iconv.ERROR_UNKNOWN
         There was an unknown error.
+
+
+=== EOF ===
 
