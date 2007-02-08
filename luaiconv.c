@@ -1,6 +1,6 @@
 /*
  * luaiconv - Performs character set conversions in Lua
- * (c) 2005-06 Alexandre Erwin Ittner <aittner@netuno.com.br>
+ * (c) 2005-07 Alexandre Erwin Ittner <aittner@netuno.com.br>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -37,7 +37,7 @@
 #include <errno.h>
 
 #define LIB_NAME                "iconv"
-#define LIB_VERSION             LIB_NAME " r2"
+#define LIB_VERSION             LIB_NAME " r3"
 #define ICONV_TYPENAME          "iconv_t"
 
 
@@ -76,9 +76,9 @@ static void push_iconv_t(lua_State *L, iconv_t cd) {
 
 
 static iconv_t get_iconv_t(lua_State *L, int i) {
-    if(luaL_checkudata(L, i, ICONV_TYPENAME) != NULL) {
+    if (luaL_checkudata(L, i, ICONV_TYPENAME) != NULL) {
         iconv_t cd = unboxptr(L, i);
-        if(cd == (iconv_t) NULL)
+        if (cd == (iconv_t) NULL)
             luaL_error(L, "attempt to use an invalid " ICONV_TYPENAME);
         return cd;
     }
@@ -91,7 +91,7 @@ static int Liconv_open(lua_State *L) {
     const char *tocode = luaL_checkstring(L, 1);
     const char *fromcode = luaL_checkstring(L, 2);
     iconv_t cd = iconv_open(tocode, fromcode);
-    if(cd != (iconv_t)(-1))
+    if (cd != (iconv_t)(-1))
         push_iconv_t(L, cd);    /* ok */
     else
         lua_pushnil(L);         /* erro */
@@ -111,7 +111,7 @@ static int Liconv(lua_State *L) {
     int hasone = 0;
 
     outbuf = (char*) malloc(obsize * sizeof(char));
-    if(outbuf == NULL) {
+    if (outbuf == NULL) {
         lua_pushstring(L, "");
         lua_pushnumber(L, ERROR_NO_MEMORY);
         return 2;
@@ -120,20 +120,20 @@ static int Liconv(lua_State *L) {
 
     do {
         ret = iconv(cd, &inbuf, &ibleft, &outbuf, &obleft);
-        if(ret == (size_t)(-1)) {
+        if (ret == (size_t)(-1)) {
             lua_pushlstring(L, outbufs, obsize - obleft);
-            if(hasone == 1)
+            if (hasone == 1)
                 lua_concat(L, 2);
             hasone = 1;
-            if(errno == EILSEQ) {
+            if (errno == EILSEQ) {
                 lua_pushnumber(L, ERROR_INVALID);
                 free(outbufs);
                 return 2;   /* Invalid character sequence */
-            } else if(errno == EINVAL) {
+            } else if (errno == EINVAL) {
                 lua_pushnumber(L, ERROR_INCOMPLETE);
                 free(outbufs);
                 return 2;   /* Incomplete character sequence */
-            } else if(errno == E2BIG) {
+            } else if (errno == E2BIG) {
                 obleft = obsize;    
                 outbuf = outbufs;
             } else {
@@ -142,10 +142,10 @@ static int Liconv(lua_State *L) {
                 return 2; /* Unknown error */
             }
         }
-    } while(ret != (size_t) 0);
+    } while (ret != (size_t) 0);
 
     lua_pushlstring(L, outbufs, obsize - obleft);
-    if(hasone == 1)
+    if (hasone == 1)
         lua_concat(L, 2);
     free(outbufs);
     return 1;   /* Done */
@@ -162,7 +162,7 @@ static int push_one(unsigned int cnt, char *names[], void *data) {
 
     /* Stack: <tbl> n */
     lua_remove(L, -1);    
-    for(i = 0; i < cnt; i++) {
+    for (i = 0; i < cnt; i++) {
         /* Stack> <tbl> */
         lua_pushnumber(L, n++);
         lua_pushstring(L, names[i]);
@@ -192,7 +192,7 @@ static int Liconvlist(lua_State *L) {
 
 static int Liconv_close(lua_State *L) {
     iconv_t cd = get_iconv_t(L, 1);
-    if(iconv_close(cd) == 0)
+    if (iconv_close(cd) == 0)
         lua_pushboolean(L, 1);  /* ok */
     else
         lua_pushnil(L);         /* erro */
