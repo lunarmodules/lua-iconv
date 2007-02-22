@@ -1,15 +1,26 @@
 Source: lua-iconv
+Section: interpreters
 Priority: optional
 Maintainer: Alexandre Erwin Ittner <aittner@netuno.com.br>
-Build-Depends: debhelper (>= 4.0.0), liblua5.1-dev
-Standards-Version: 3.6.1
-Section: interpreters
+Build-Depends: cdbs (>= 0.4.23-1.1), debhelper (>= 5), dpatch, lua5.1-policy-dev (>= 6)
+Standards-Version: 3.7.2
+XS-X-Vcs-svn: svn://svn.debian.org/pkg-lua/packages/lua-iconv
 
-Package: lua-iconv
+Package: liblua5.1-iconv
 Architecture: any
 Depends: ${shlibs:Depends}
-Recommends: lua5.1
 Description: iconv bindings for the Lua Programming Language
   Lua-iconv is POSIX 'iconv' binding for the Lua Programming Language. It
   converts a sequence of characters from one codeset into a sequence of
   corresponding characters in another codeset.
+  Homepage: <http://lua-iconv.luaforge.net/>
+
+Package: liblua5.1-iconv-dev
+Architecture: any
+Depends: liblua5.1-iconv (= ${Source-Version})
+Description: iconv development files for the lua language version 5.1
+ This package contains the development files of the iconv lua5.1 bindings,
+ useful to create a statically linked binary (like a C application or a
+ standalone lua interpreter).
+ Documentation is also shipped within this package.
+ Homepage: <http://lua-iconv.luaforge.net/>

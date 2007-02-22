@@ -1,81 +1,15 @@
 #!/usr/bin/make -f
-# -*- makefile -*-
 
-## This is my first Debian package. Please, be patient ;)
+include /usr/share/cdbs/1/class/makefile.mk
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/rules/dpatch.mk
 
-
-# Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
-
-# This is the debhelper compatability version to use.
-export DH_COMPAT=4
-
-LUAPKG=lua5.1
-INSTALL_PATH=`pkg-config $(LUAPKG) --variable=INSTALL_CMOD`
-
-CFLAGS = -Wall -g
-
-build: build-stamp
-build-stamp:
-	dh_testdir
-
-# Well, this does it all.
-	$(MAKE)
-
-	touch build-stamp
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f iconv.so
-	rm -f build-stamp configure-stamp
-
-# Toplevel clean does it all
-	-$(MAKE) clean
-
-	dh_clean
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	mkdir -p debian/lua-iconv/usr/share/doc/lua-iconv
-	mkdir -p debian/lua-iconv/$(INSTALL_PATH)
-
-	cp iconv.so debian/lua-iconv/$(INSTALL_PATH)
-	cp README COPYING test_iconv.lua debian/lua-iconv/usr/share/doc/lua-iconv/
-
-# Build architecture-dependent files here.
-binary-arch: build install
-	dh_testdir -a
-	dh_testroot -a
-#	dh_installdebconf -a
-	dh_installdocs -a
-#	dh_installexamples -a
-#	dh_installmenu -a
-#	dh_installlogrotate -a
-#	dh_installemacsen -a
-#	dh_installpam -a
-#	dh_installmime -a
-#	dh_installinit -a
-#	dh_installcron -a
-#	dh_installman -a
-#	dh_installinfo -a
-#	dh_undocumented -a
-	dh_installchangelogs -a
-	dh_strip -a
-	dh_link -a
-	dh_compress -a
-	dh_fixperms -a
-	dh_makeshlibs -a -V
-	dh_installdeb -a
-#	dh_perl -a
-	dh_shlibdeps -a
-	dh_gencontrol -a
-	dh_md5sums -a
-	dh_builddeb -a
-
-binary: binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+DEB_MAKE_BUILD_TARGET := all -f Makefile.Debian
+DEB_MAKE_TEST_TARGET := test -f Makefile.Debian
+DEB_MAKE_CLEAN_TARGET := clean -f Makefile.Debian
+DEB_MAKE_INSTALL_TARGET := install -f Makefile.Debian DESTDIR=$(DEB_DESTDIR)
+DEB_DH_INSTALL_SOURCEDIR := $(DEB_DESTDIR)
+pre-build::
+	lua5.1-policy-apply
+clean::
+	lua5.1-policy-apply --reverse
