@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PACKAGE=lua-iconv
-VERSION=r3
+VERSION=r4
 
 DIRNAME=$PACKAGE-$VERSION
 TGZNAME=$DIRNAME.tar.gz
