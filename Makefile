@@ -40,18 +40,20 @@ LIBS = `pkg-config $(LUAPKG) --libs`
 #LIBS = -llua5.1
 #INSTALL_PATH = /usr/lib/lua/5.1
 
+all: iconv.so
 
-iconv.so: luaiconv.c
-	$(CC) -o iconv.so -shared $(LIBS) $(CFLAGS) luaiconv.c
+iconv.lo: luaiconv.c
+	$(CC) -o iconv.lo -c $(CFLAGS) luaiconv.c
+
+iconv.so: iconv.lo
+	$(CC) -o iconv.so -shared $(LIBS) iconv.lo
 
 install: iconv.so
 	make test
 	install -s iconv.so $(INSTALL_PATH)
 
 clean:
-	$(RM) iconv.so
+	$(RM) iconv.so iconv.lo
 
 test: iconv.so test_iconv.lua
 	lua test_iconv.lua
-
-all: iconv.so
