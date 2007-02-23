@@ -9,11 +9,8 @@ TGZNAME=$DIRNAME.tar.gz
 rm -f $TGZNAME
 mkdir $DIRNAME
 
-mkdir $DIRNAME/debian
-cp debian/changelog $DIRNAME/debian/
-cp debian/control $DIRNAME/debian/
-cp debian/copyright $DIRNAME/debian/
-cp debian/rules $DIRNAME/debian/
+cp -r debian $DIRNAME/
+rm -rf $DIRNAME/debian/.svn
 
 cp -r COPYING Makefile README luaiconv.c test_iconv.lua $DIRNAME
 
