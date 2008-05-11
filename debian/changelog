@@ -2,7 +2,7 @@ lua-iconv (0.r4-1) unstable; urgency=low
 
   * New Debian packages according to the Debian Lua policy.
 
- -- Alexandre Erwin Ittner <aittner@netuno.com.br>  Wed, 21 Feb 2007 22:00:00 -0200
+ -- Alexandre Erwin Ittner <aittner@gmail.com>  Sun, 11 May 2008 12:30:00 -0300
 
 
 lua-iconv (0.r3-1) unstable; urgency=low
