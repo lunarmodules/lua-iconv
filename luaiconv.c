@@ -1,6 +1,6 @@
 /*
  * luaiconv - Performs character set conversions in Lua
- * (c) 2005-07 Alexandre Erwin Ittner <aittner@netuno.com.br>
+ * (c) 2005-08 Alexandre Erwin Ittner <aittner@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the

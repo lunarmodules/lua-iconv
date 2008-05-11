@@ -1,6 +1,6 @@
 
         Lua-iconv: performs character set conversions in Lua
-     (c) 2005-07 Alexandre Erwin Ittner <aittner@netuno.com.br>
+     (c) 2005-07 Alexandre Erwin Ittner <aittner@gmail.com>
            Project page: http://lua-iconv.luaforge.net/
 
 
@@ -12,7 +12,7 @@ sequence of corresponding characters in another codeset. The codesets
 are those specified in the iconv.new() call that returned the conversion
 descriptor, cd.
 
-Lua-iconv r3 *requires* Lua 5.1. If you are using Lua 5.0, please use the
+Lua-iconv r4 *requires* Lua 5.1. If you are using Lua 5.0, please use the
 first release (lua-iconv-r1).
 
 Details regarding iconv may be obtained from:
@@ -22,7 +22,7 @@ http://www.opengroup.org/onlinepubs/007908799/xsh/iconv.h.html
 
 === LICENSE ===
 
-Lua-iconv is (c) 2005-07 Alexandre Erwin Ittner <aittner@netuno.com.br>
+Lua-iconv is (c) 2005-08 Alexandre Erwin Ittner <aittner@gmail.com>
 
 Lua-iconv is copyrighted free software: it can be used for both academic
 and commercial purposes at absolutely no cost. There are no royalties
