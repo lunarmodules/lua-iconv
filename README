@@ -12,7 +12,7 @@ sequence of corresponding characters in another codeset. The codesets
 are those specified in the iconv.new() call that returned the conversion
 descriptor, cd.
 
-Lua-iconv r4 *requires* Lua 5.1. If you are using Lua 5.0, please use the
+Lua-iconv r5 *requires* Lua 5.1. If you are using Lua 5.0, please use the
 first release (lua-iconv-r1).
 
 Details regarding iconv may be obtained from:
