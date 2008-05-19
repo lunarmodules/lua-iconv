@@ -26,20 +26,22 @@
 #CC = gcc
 #RM = rm
 
+# Gives a nice speedup, but also spoils debugging on x86. Comment out this
+# line when debugging.
+OMIT_FRAME_POINTER = -fomit-frame-pointer
+
 # Name of .pc file. "lua5.1" on Debian/Ubuntu
 LUAPKG = lua5.1
 CFLAGS = `pkg-config $(LUAPKG) --cflags` -O3 -Wall
-LFLAGS = -shared
+LFLAGS = -shared $(OMIT_FRAME_POINTER)
 INSTALL_PATH = `pkg-config $(LUAPKG) --variable=INSTALL_CMOD`
-LIBS = `pkg-config $(LUAPKG) --libs`
 
 ## If your system doesn't have pkg-config, comment out the previous lines and
 ## uncomment and change the following ones according to your building
 ## enviroment.
 
 #CFLAGS = -I/usr/include/lua5.1/ -O3 -Wall
-#LFLAGS = -shared
-#LIBS = -llua5.1
+#LFLAGS = -shared $(OMIT_FRAME_POINTER)
 #INSTALL_PATH = /usr/lib/lua/5.1
 
 
