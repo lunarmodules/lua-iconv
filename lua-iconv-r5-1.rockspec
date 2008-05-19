@@ -6,7 +6,8 @@ package = "lua-iconv"
 version = "r5-1"
 
 source = {
-  url = "http://luaforge.net/frs/download.php/3374/lua-iconv-r4.tar.gz",
+  url = "http://luaforge.net/frs/download.php/3389/lua-iconv-r5.tar.gz",
+  md5 = "c4ebb5e70844700144a82375448dfa17"
 }
 
 description = {
