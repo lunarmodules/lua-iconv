@@ -3,7 +3,7 @@
 -- rockspec based uppon the file provided by DarkGod <darkgod at net-core.org>
 
 package = "lua-iconv"
-version = "r4-1"
+version = "r5-1"
 
 source = {
   url = "http://luaforge.net/frs/download.php/3374/lua-iconv-r4.tar.gz",
