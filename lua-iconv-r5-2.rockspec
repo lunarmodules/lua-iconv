@@ -3,7 +3,7 @@
 -- rockspec based uppon the file provided by DarkGod <darkgod at net-core.org>
 
 package = "lua-iconv"
-version = "r5-1"
+version = "r5-2"
 
 source = {
   url = "http://luaforge.net/frs/download.php/3389/lua-iconv-r5.tar.gz",
@@ -32,12 +32,14 @@ external_dependencies = {
 }
 
 build = {
-   type = "make",
-   variables = {
-      CFLAGS = "-I$(LUA_INCDIR) -O3 -Wall",
-      LFLAGS = "$(LIBFLAG)",
-      LIBS = "",
-      INSTALL_PATH = "$(LIBDIR)"
+   type = "module",
+   modules = {
+      iconv = {
+          sources = {"luaiconv.c"},
+          incdirs = {"$(ICONV_INCDIR)"},
+          libdirs = {"$(ICONV_LIBDIR)"}
+      }
    }
 }
+
 
