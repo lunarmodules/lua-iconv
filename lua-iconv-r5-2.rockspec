@@ -39,7 +39,14 @@ build = {
           incdirs = {"$(ICONV_INCDIR)"},
           libdirs = {"$(ICONV_LIBDIR)"}
       }
+   },
+   platforms = {
+      cygwin = {
+         modules = {
+            iconv = {
+               libraries = {"iconv"}
+            }
+         }
+      }
    }
 }
-
-
