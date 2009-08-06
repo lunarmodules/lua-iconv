@@ -3,11 +3,11 @@
 -- rockspec based uppon the file provided by DarkGod <darkgod at net-core.org>
 
 package = "lua-iconv"
-version = "5-3"
+version = "6-1"
 
 source = {
-  url = "http://luaforge.net/frs/download.php/4175/lua-iconv-5.tar.gz",
-  md5 = "9b441a4a5afffa86f23d2f4c67363097"
+  url = "http://luaforge.net/frs/download.php/4181/lua-iconv-6.tar.gz",
+  md5 = "2cec334c5786d7c420a53003d6cb93d4"
 }
 
 description = {
