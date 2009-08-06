@@ -37,7 +37,7 @@
 #include <errno.h>
 
 #define LIB_NAME                "iconv"
-#define LIB_VERSION             LIB_NAME " 5"
+#define LIB_VERSION             LIB_NAME " 6"
 #define ICONV_TYPENAME          "iconv_t"
 
 

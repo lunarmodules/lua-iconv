@@ -55,7 +55,7 @@ iconv.so: iconv.lo
 
 install: iconv.so
 	make test
-	install -D -s iconv.so $(INSTALL_PATH)/iconv.so
+	install -D -s iconv.so $(DESTDIR)/$(INSTALL_PATH)/iconv.so
 
 clean:
 	$(RM) iconv.so iconv.lo
