@@ -24,7 +24,6 @@
  * If you use this package in a product, an acknowledgment in the product
  * documentation would be greatly appreciated (but it is not required).
  *
- * $Id$
  *
  */
 
