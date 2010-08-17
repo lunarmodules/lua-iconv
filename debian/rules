@@ -1,15 +1,3 @@
 #!/usr/bin/make -f
-
-include /usr/share/cdbs/1/class/makefile.mk
-include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/rules/dpatch.mk
-
-DEB_MAKE_BUILD_TARGET := all -f Makefile.Debian
-DEB_MAKE_TEST_TARGET := test -f Makefile.Debian
-DEB_MAKE_CLEAN_TARGET := clean -f Makefile.Debian
-DEB_MAKE_INSTALL_TARGET := install -f Makefile.Debian DESTDIR=$(DEB_DESTDIR)
-DEB_DH_INSTALL_SOURCEDIR := $(DEB_DESTDIR)
-pre-build::
-	lua5.1-policy-apply
-clean::
-	lua5.1-policy-apply --reverse
+%:
+	dh $@

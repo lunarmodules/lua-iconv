@@ -1,13 +1,22 @@
-lua-iconv (0.r4-1) unstable; urgency=low
+lua-iconv (6-3) unstable; urgency=low
 
-  * New Debian packages according to the Debian Lua policy.
+  * debian/control: Conflicts, Provides, and Replaces lua-iconv
+    (Closes: #557052)
 
- -- Alexandre Erwin Ittner <aittner@gmail.com>  Sun, 11 May 2008 12:30:00 -0300
+ -- Jon Bernard <jbernard@debian.org>  Fri, 20 Nov 2009 18:58:12 -0600
 
+lua-iconv (6-2) unstable; urgency=low
 
-lua-iconv (0.r3-1) unstable; urgency=low
+  * debian/control: update package name to conform to lua standard
+    (Closes: #544958)
+  * debian/control: add Vcs fields
+  * debian/control: update package description
+  * debian/watch: look for new upstream releases on luaforge (Closes: #544960)
 
-  * First release in .deb format.
+ -- Jon Bernard <jbernard@debian.org>  Wed, 28 Oct 2009 11:58:00 -0400
 
- -- Alexandre Erwin Ittner <aittner@netuno.com.br>  Wed,  3 Feb 2007 00:20:09 -0200
+lua-iconv (6-1) unstable; urgency=low
 
+  * Initial release (Closes: #540298)
+
+ -- Jon Bernard <jbernard@debian.org>  Sun, 02 Aug 2009 13:50:50 -0400

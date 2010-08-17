@@ -1,5 +1,2 @@
-# test this watch file using:
-# uscan --watchfile debian/watch --upstream-version 0.0.1 --package lua-iconv
-#
 version=3
-http://luaforge.net/frs/download.php/\d+/lua-iconv-([\d\.]*).tar.gz
+http://luaforge.net/frs/?group_id=131 /frs/download.php/\d+/lua-iconv-([\d\.]*).tar.gz

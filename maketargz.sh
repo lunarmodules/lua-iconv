@@ -9,7 +9,7 @@ TGZNAME=$DIRNAME.tar.gz
 rm -f $TGZNAME
 mkdir $DIRNAME
 
-#cp -r debian $DIRNAME/
+cp -r debian $DIRNAME/
 #rm -rf $DIRNAME/debian/.svn
 
 cp -r COPYING Makefile README luaiconv.c test_iconv.lua $DIRNAME
