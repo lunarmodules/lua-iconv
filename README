@@ -1,6 +1,6 @@
 
         Lua-iconv: performs character set conversions in Lua
-     (c) 2005-09 Alexandre Erwin Ittner <aittner@gmail.com>
+     (c) 2005-10 Alexandre Erwin Ittner <alexandre@ittner.com.br>
            Project page: http://lua-iconv.luaforge.net/
 
 
@@ -22,7 +22,7 @@ http://www.opengroup.org/onlinepubs/007908799/xsh/iconv.h.html
 
 === LICENSE ===
 
-Lua-iconv is (c) 2005-09 Alexandre Erwin Ittner <aittner@gmail.com>
+Lua-iconv is (c) 2005-10 Alexandre Erwin Ittner <alexandre@ittner.com.br>
 
 Lua-iconv is copyrighted free software: it can be used for both academic
 and commercial purposes at absolutely no cost. There are no royalties
