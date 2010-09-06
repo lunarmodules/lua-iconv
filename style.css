@@ -1,0 +1,87 @@
+
+body {
+    background: #ffffff;
+    font-size: 10pt;
+    color: #000000;
+    font-family: "Bitstream Vera Sans", "DejaVu Sans", Verdana, sans-serif;
+    margin: 1em;
+}
+
+kbd, code {
+    font-family: "Bitstream Vera Sans Mono", "DejaVu Sans Mono", monospaced;
+}
+
+kbd {
+    background-color: #dddddd;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:link {
+    color: #0000ff;
+}
+
+a:visited {
+    color: #aa00aa;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #ff0000;
+}
+
+img {
+    border: none;
+}
+
+#menu {
+    text-align: center;
+}
+
+#menu h2 {
+    display: none;
+}
+
+#menu ul {
+    list-style-type: none;
+}
+
+#menu ul li {
+    display: inline;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+h1 {
+    background: url(lua-iconv-logo.png) no-repeat center bottom;
+    height: 160px;
+    text-align: center;
+    font-size: 2em;
+}
+
+h2, h3 {
+    font-weight: bold;
+}
+
+h2 {
+    margin-top: 2em;
+    font-size: 1.5em;
+    width: 100%;
+    border-bottom: 1px solid #cacaea;
+}
+
+h3 {
+    font-size: 1.15em;
+}
+
+dl.prop-list dt {
+    float: left;
+    width: 6em;
+}
+
+dl.prop-list dd {
+    margin-left: 7em; 
+}
+
