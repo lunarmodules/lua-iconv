@@ -22,21 +22,25 @@ Details on iconv may be obtained in the Open Group's interface definition
 === Download and installation ===
 
 Lua-iconv can be obtained from its LuaForge project page 
-(http://luaforge.net/projects/lua-iconv/) or from some Linux distributions
-which already provide it (eg. Debian).
+(http://luaforge.net/projects/lua-iconv/), from a LuaRocks server or from
+some Linux distributions which already provide it (eg. Debian).
 
 Unless you downloaded a compiled package, you must build the library for
-your system. If you are using a system with pkg-config (as many Linux
-distributions and Unix flavors) just fire up your favourite shell, untar
-the distribution package and type, as root, within the program directory:
+your system. If you have LuaRocks installed, all the process is automatic;
+just fire up your favourite shell and type, as root:
+
+    luarocks install lua-iconv
+
+and the package will be downloaded from a rock server, installed and
+configured. Otherwise, you must compile and install the package. In a system
+with pkg-config (as many Linux distributions and Unix flavors) open a shell,
+untar the distribution package and, within the program directory, type:
 
     make install
 
-The library will be compiled and installed on the in the correct path (which
-is defined in lua5.1.pc).
-
-Compiling on systems without pkg-config requires manual changes in the
-Makefile.
+as root. The library will be compiled and installed on the in the correct
+path (which is defined in lua5.1.pc). Compiling on systems without pkg-config
+requires manual changes in the Makefile (this includes Windows).
 
 
 
@@ -54,8 +58,8 @@ directory from package.cpath).
 
 === API documentation ===
 
-cd = iconv.new(to, from)
-cd = iconv.open(to, from)
+  cd = iconv.new(to, from)
+  cd = iconv.open(to, from)
 
     Opens a new conversion descriptor, from the 'from' charset to the
     'to' charset. Concatenating "//TRANSLIT" to the first argument will
@@ -66,7 +70,7 @@ cd = iconv.open(to, from)
     This function returns a new converter or nil on error.
 
 
-nstr, err = cd:iconv(str)
+  nstr, err = cd:iconv(str)
 
     Converts the 'str' string to the desired charset. This method always
     returns two arguments: the converted string and an error code, which
