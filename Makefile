@@ -23,42 +23,22 @@
 # If you use this package in a product, an acknowledgment in the product
 # documentation would be greatly appreciated (but it is not required).
 
-#CC = gcc
-#RM = rm
-
-# Gives a nice speedup, but also spoils debugging on x86. Comment out this
-# line when debugging.
-OMIT_FRAME_POINTER = -fomit-frame-pointer
-
-# Name of .pc file. "lua5.1" on Debian/Ubuntu
-LUAPKG = lua5.1
-CFLAGS = `pkg-config $(LUAPKG) --cflags` -fPIC -O3 -Wall
-LFLAGS = -shared $(OMIT_FRAME_POINTER)
-INSTALL_PATH = `pkg-config $(LUAPKG) --variable=INSTALL_CMOD`
-
-## If your system doesn't have pkg-config, comment out the previous lines and
-## uncomment and change the following ones according to your building
-## enviroment.
-
-#CFLAGS = -I/usr/include/lua5.1/ -fPIC -O3 -Wall
-#LFLAGS = -shared $(OMIT_FRAME_POINTER)
-#INSTALL_PATH = /usr/lib/lua/5.1
-
+CC=gcc
+LD=ld
+CFLAGS+=-fPIC
 
 all: iconv.so
 
-iconv.lo: luaiconv.c
-	$(CC) -o iconv.lo -c $(CFLAGS) luaiconv.c
+iconv.so: luaiconv.o
+	$(LD) -shared $$(pkg-config lua --libs) luaiconv.o -o iconv.so
+.c.o:
+	$(CC) $(CFLAGS) -c $<
 
-iconv.so: iconv.lo
-	$(CC) -o iconv.so $(LFLAGS) $(LIBS) iconv.lo
-
-install: iconv.so
-	make test
-	install -D -s iconv.so $(DESTDIR)/$(INSTALL_PATH)/iconv.so
+install: iconv.so test
+#	install -D -s iconv.so $(DESTDIR)/$(INSTALL_PATH)/iconv.so
 
 clean:
-	$(RM) iconv.so iconv.lo
+	rm *.so *.o
 
 test: iconv.so test_iconv.lua
 	lua test_iconv.lua
