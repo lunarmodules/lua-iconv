@@ -7,10 +7,9 @@ local m = { }
 local mti = { }
 local mt = { __index = mti }
 
-function m.open(fname, mode, fromcharset, tocharset)
+function m.open(fname, mode, tocharset, fromcharset)
   assert(mode == "r" or mode == "rb", "Only read modes are supported yet")
-  tocharset = tocharset or "utf8"
-  local cd = assert(iconv.new(fromcharset, tocharset), "Bad charset")
+  local cd = assert(iconv.new(tocharset, fromcharset), "Bad charset")
   local fp = io.open(fname, mode)
   if not fp then
     return nil
