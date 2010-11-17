@@ -30,19 +30,26 @@
 # line when debugging.
 OMIT_FRAME_POINTER = -fomit-frame-pointer
 
-# Name of .pc file. "lua5.2" on Debian/Ubuntu
+LUABIN = lua
 LUAPKG = lua5.2
 CFLAGS = `pkg-config $(LUAPKG) --cflags` -fPIC -O3 -Wall
 LFLAGS = -shared $(OMIT_FRAME_POINTER)
-INSTALL_PATH = `pkg-config $(LUAPKG) --variable=INSTALL_CMOD`
 
-## If your system doesn't have pkg-config, comment out the previous lines and
-## uncomment and change the following ones according to your building
-## enviroment.
+INSTALL_PATH = `$(LUABIN) -e'                           \
+    for dir in package.cpath:gmatch("(/[^?;]+)?") do    \
+        io.write(dir)                                   \
+        os.exit(0)                                      \
+    end                                                 \
+    os.exit(1)                                          \
+'`
 
-#CFLAGS = -I/usr/include/lua5.2/ -fPIC -O3 -Wall
+## If your system doesn't have pkg-config or if you do not want to get the
+## install path from Lua, comment out the previous lines and uncomment and
+## change the following ones according to your building environment.
+
+#CFLAGS = -I/usr/local/include/ -fPIC -O3 -Wall
 #LFLAGS = -shared $(OMIT_FRAME_POINTER)
-#INSTALL_PATH = /usr/lib/lua/5.1
+#INSTALL_PATH = /usr/local/lib/lua/5.2/
 
 
 all: iconv.so
