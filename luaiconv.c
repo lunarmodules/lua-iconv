@@ -87,6 +87,7 @@ static int Liconv_open(lua_State *L) {
     return 1;
 }
 
+#define CONV_BUF_SIZE 256
 
 static int Liconv(lua_State *L) {
     iconv_t cd = get_iconv_t(L, 1);
@@ -94,7 +95,7 @@ static int Liconv(lua_State *L) {
     char *inbuf = (char*) luaL_checkstring(L, 2);
     char *outbuf;
     char *outbufs;
-    size_t obsize = (ibleft > 256) ? ibleft : 256; 
+    size_t obsize = (ibleft > CONV_BUF_SIZE) ? ibleft : CONV_BUF_SIZE; 
     size_t obleft = obsize;
     size_t ret = -1;
     int hasone = 0;
