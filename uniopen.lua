@@ -1,13 +1,13 @@
 
 -- Simple (and incomplete) Unicode I/O layer.
 
-module("uniopen", package.seeall)
+local iconv = require("iconv")
 
-require "iconv"
+local m = { }
+local mti = { }
+local mt = { __index = mti }
 
-local mt = { __index = _M }
-
-function open(fname, mode, fromcharset, tocharset)
+function m.open(fname, mode, fromcharset, tocharset)
   assert(mode == "r" or mode == "rb", "Only read modes are supported yet")
   tocharset = tocharset or "utf8"
   local cd = assert(iconv.new(fromcharset, tocharset), "Bad charset")
@@ -20,7 +20,7 @@ function open(fname, mode, fromcharset, tocharset)
   return o;
 end
 
-function read(fp, mod)
+function mti.read(fp, mod)
   assert(fp and fp.fp and fp.cd, "Bad file descriptor")
   local ret = fp.fp:read(mod)
   if ret then
@@ -30,8 +30,9 @@ function read(fp, mod)
   end
 end
 
-function close(fp)
+function mti.close(fp)
   assert(fp and fp.fp, "Bad file descriptor")
   fp.fp:close()
 end
 
+return m
