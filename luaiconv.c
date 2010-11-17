@@ -50,13 +50,13 @@
 
 
 /* Emulates lua_(un)boxpointer from Lua 5.0 (don't exists on Lua 5.1) */
-#define boxptr(L, p)   (*(void**)(lua_newuserdata(L, sizeof(void*))) = (p))
-#define unboxptr(L, i) (*(void**)(lua_touserdata(L, i)))
+#define BOXPTR(L, p)   (*(void**)(lua_newuserdata(L, sizeof(void*))) = (p))
+#define UNBOXPTR(L, i) (*(void**)(lua_touserdata(L, i)))
 
 /* Table assumed on top */
-#define tblseticons(L, c, v)    \
-    lua_pushliteral(L, c);      \
-    lua_pushnumber(L, v);       \
+#define TBL_SET_INT_CONST(L, c, v)  \
+    lua_pushliteral(L, c);          \
+    lua_pushnumber(L, v);           \
     lua_settable(L, -3);
 
 
@@ -68,7 +68,7 @@
 
 
 static void push_iconv_t(lua_State *L, iconv_t cd) {
-    boxptr(L, cd);
+    BOXPTR(L, cd);
     luaL_getmetatable(L, ICONV_TYPENAME);
     lua_setmetatable(L, -2);
 }
@@ -76,7 +76,7 @@ static void push_iconv_t(lua_State *L, iconv_t cd) {
 
 static iconv_t get_iconv_t(lua_State *L, int i) {
     if (luaL_checkudata(L, i, ICONV_TYPENAME) != NULL) {
-        iconv_t cd = unboxptr(L, i);
+        iconv_t cd = UNBOXPTR(L, i);
         if (cd == (iconv_t) NULL)
             luaL_error(L, "attempt to use an invalid " ICONV_TYPENAME);
         return cd;
@@ -219,10 +219,10 @@ static const luaL_reg iconvMT[] = {
 int luaopen_iconv(lua_State *L) {
     luaL_register(L, LIB_NAME, inconvFuncs);
 
-    tblseticons(L, "ERROR_NO_MEMORY",   ERROR_NO_MEMORY);
-    tblseticons(L, "ERROR_INVALID",     ERROR_INVALID);
-    tblseticons(L, "ERROR_INCOMPLETE",  ERROR_INCOMPLETE);
-    tblseticons(L, "ERROR_UNKNOWN",     ERROR_UNKNOWN);
+    TBL_SET_INT_CONST(L, "ERROR_NO_MEMORY",   ERROR_NO_MEMORY);
+    TBL_SET_INT_CONST(L, "ERROR_INVALID",     ERROR_INVALID);
+    TBL_SET_INT_CONST(L, "ERROR_INCOMPLETE",  ERROR_INCOMPLETE);
+    TBL_SET_INT_CONST(L, "ERROR_UNKNOWN",     ERROR_UNKNOWN);
 
     lua_pushliteral(L, "VERSION");
     lua_pushstring(L, LIB_VERSION);
