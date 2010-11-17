@@ -28,12 +28,12 @@
 
 # Gives a nice speedup, but also spoils debugging on x86. Comment out this
 # line when debugging.
-OMIT_FRAME_POINTER = -fomit-frame-pointer
+OMIT_FRAME_PTR = -fomit-frame-pointer
 
 LUABIN = lua
 LUAPKG = lua5.2
-CFLAGS = `pkg-config $(LUAPKG) --cflags` -fPIC -O3 -Wall
-LFLAGS = -shared $(OMIT_FRAME_POINTER)
+CFLAGS = `pkg-config $(LUAPKG) --cflags` -fPIC -O3 -Wall $(OMIT_FRAME_PTR)
+LFLAGS = -shared
 
 INSTALL_PATH = `$(LUABIN) -e'                           \
     for dir in package.cpath:gmatch("(/[^?;]+)?") do    \
@@ -47,8 +47,8 @@ INSTALL_PATH = `$(LUABIN) -e'                           \
 ## install path from Lua, comment out the previous lines and uncomment and
 ## change the following ones according to your building environment.
 
-#CFLAGS = -I/usr/local/include/ -fPIC -O3 -Wall
-#LFLAGS = -shared $(OMIT_FRAME_POINTER)
+#CFLAGS = -I/usr/local/include/ -fPIC -O3 -Wall $(OMIT_FRAME_PTR)
+#LFLAGS = -shared
 #INSTALL_PATH = /usr/local/lib/lua/5.2/
 
 
