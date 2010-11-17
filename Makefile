@@ -30,8 +30,8 @@
 # line when debugging.
 OMIT_FRAME_POINTER = -fomit-frame-pointer
 
-# Name of .pc file. "lua5.1" on Debian/Ubuntu
-LUAPKG = lua5.1
+# Name of .pc file. "lua5.2" on Debian/Ubuntu
+LUAPKG = lua5.2
 CFLAGS = `pkg-config $(LUAPKG) --cflags` -fPIC -O3 -Wall
 LFLAGS = -shared $(OMIT_FRAME_POINTER)
 INSTALL_PATH = `pkg-config $(LUAPKG) --variable=INSTALL_CMOD`
@@ -40,7 +40,7 @@ INSTALL_PATH = `pkg-config $(LUAPKG) --variable=INSTALL_CMOD`
 ## uncomment and change the following ones according to your building
 ## enviroment.
 
-#CFLAGS = -I/usr/include/lua5.1/ -fPIC -O3 -Wall
+#CFLAGS = -I/usr/include/lua5.2/ -fPIC -O3 -Wall
 #LFLAGS = -shared $(OMIT_FRAME_POINTER)
 #INSTALL_PATH = /usr/lib/lua/5.1
 
