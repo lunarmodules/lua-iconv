@@ -42,18 +42,18 @@
 #define BOXPTR(L, p)   (*(void**)(lua_newuserdata(L, sizeof(void*))) = (p))
 #define UNBOXPTR(L, i) (*(void**)(lua_touserdata(L, i)))
 
-/* Table assumed on top */
-#define TBL_SET_INT_CONST(L, c, v)  \
-    lua_pushliteral(L, c);          \
-    lua_pushnumber(L, v);           \
-    lua_settable(L, -3);
-
-
+/* Set a integer constant. Assumes a table in the top of the stack */
+#define TBL_SET_INT_CONST(L, c) {   \
+    lua_pushliteral(L, #c);         \
+    lua_pushnumber(L, c);           \
+    lua_settable(L, -3);            \
+}
 
 #define ERROR_NO_MEMORY     1
 #define ERROR_INVALID       2
 #define ERROR_INCOMPLETE    3
 #define ERROR_UNKNOWN       4
+
 
 
 static void push_iconv_t(lua_State *L, iconv_t cd) {
@@ -83,7 +83,7 @@ static int Liconv_open(lua_State *L) {
     if (cd != (iconv_t)(-1))
         push_iconv_t(L, cd);    /* ok */
     else
-        lua_pushnil(L);         /* erro */
+        lua_pushnil(L);         /* error */
     return 1;
 }
 
@@ -185,12 +185,12 @@ static int Liconv_close(lua_State *L) {
     if (iconv_close(cd) == 0)
         lua_pushboolean(L, 1);  /* ok */
     else
-        lua_pushnil(L);         /* erro */
+        lua_pushnil(L);         /* error */
     return 1;
 }
 
 
-static const luaL_reg inconvFuncs[] = {
+static const luaL_reg iconv_funcs[] = {
     { "open",   Liconv_open },
     { "new",    Liconv_open },
     { "iconv",  Liconv },
@@ -202,12 +202,12 @@ static const luaL_reg inconvFuncs[] = {
 
 
 int luaopen_iconv(lua_State *L) {
-    luaL_newlib(L, inconvFuncs);
+    luaL_newlib(L, iconv_funcs);
 
-    TBL_SET_INT_CONST(L, "ERROR_NO_MEMORY",   ERROR_NO_MEMORY);
-    TBL_SET_INT_CONST(L, "ERROR_INVALID",     ERROR_INVALID);
-    TBL_SET_INT_CONST(L, "ERROR_INCOMPLETE",  ERROR_INCOMPLETE);
-    TBL_SET_INT_CONST(L, "ERROR_UNKNOWN",     ERROR_UNKNOWN);
+    TBL_SET_INT_CONST(L, ERROR_NO_MEMORY);
+    TBL_SET_INT_CONST(L, ERROR_INVALID);
+    TBL_SET_INT_CONST(L, ERROR_INCOMPLETE);
+    TBL_SET_INT_CONST(L, ERROR_UNKNOWN);
 
     lua_pushliteral(L, "VERSION");
     lua_pushstring(L, LIB_VERSION);
