@@ -81,7 +81,8 @@ static iconv_t get_iconv_t(lua_State *L, int i) {
             luaL_error(L, "attempt to use an invalid " ICONV_TYPENAME);
         return cd;
     }
-    luaL_typerror(L, i, ICONV_TYPENAME);
+    luaL_argerror(L, i, lua_pushfstring(L, ICONV_TYPENAME " expected, got %s",
+        luaL_typename(L, i)));
     return NULL;
 }
 
