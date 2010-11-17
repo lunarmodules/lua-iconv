@@ -1,4 +1,4 @@
-require "iconv"
+local iconv = require("iconv")
 
 -- Set your terminal encoding here
 -- local termcs = "iso-8859-1"

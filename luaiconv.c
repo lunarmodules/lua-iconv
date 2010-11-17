@@ -36,20 +36,9 @@
 #include <errno.h>
 
 #define LIB_NAME                "iconv"
-#define LIB_VERSION             LIB_NAME " 6"
+#define LIB_VERSION             LIB_NAME " 7"
 #define ICONV_TYPENAME          "iconv_t"
 
-
-/* Compatibility between Lua 5.1+ and Lua 5.0 */
-#ifndef LUA_VERSION_NUM
-#define LUA_VERSION_NUM 0
-#endif
-#if LUA_VERSION_NUM < 501
-#define luaL_register(a, b, c) luaL_openlib((a), (b), (c), 0)
-#endif
-
-
-/* Emulates lua_(un)boxpointer from Lua 5.0 (don't exists on Lua 5.1) */
 #define BOXPTR(L, p)   (*(void**)(lua_newuserdata(L, sizeof(void*))) = (p))
 #define UNBOXPTR(L, i) (*(void**)(lua_touserdata(L, i)))
 
@@ -101,7 +90,7 @@ static int Liconv_open(lua_State *L) {
 
 static int Liconv(lua_State *L) {
     iconv_t cd = get_iconv_t(L, 1);
-    size_t ibleft = lua_strlen(L, 2);
+    size_t ibleft = lua_rawlen(L, 2);
     char *inbuf = (char*) luaL_checkstring(L, 2);
     char *outbuf;
     char *outbufs;
@@ -211,14 +200,8 @@ static const luaL_reg inconvFuncs[] = {
 };
 
 
-static const luaL_reg iconvMT[] = {
-    { "__gc", Liconv_close },
-    { NULL, NULL }
-};
-
-
 int luaopen_iconv(lua_State *L) {
-    luaL_register(L, LIB_NAME, inconvFuncs);
+    luaL_newlib(L, inconvFuncs);
 
     TBL_SET_INT_CONST(L, "ERROR_NO_MEMORY",   ERROR_NO_MEMORY);
     TBL_SET_INT_CONST(L, "ERROR_INVALID",     ERROR_INVALID);
@@ -230,10 +213,15 @@ int luaopen_iconv(lua_State *L) {
     lua_settable(L, -3);
 
     luaL_newmetatable(L, ICONV_TYPENAME);
+
     lua_pushliteral(L, "__index");
     lua_pushvalue(L, -3);
     lua_settable(L, -3);
-    luaL_openlib(L, NULL, iconvMT, 0);
+
+    lua_pushliteral(L, "__gc");
+    lua_pushcfunction(L, Liconv_close);
+    lua_settable(L, -3);
+
     lua_pop(L, 1);
 
     return 1;
