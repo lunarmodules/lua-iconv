@@ -88,6 +88,10 @@ directory from package.cpath).
     iconv.ERROR_INCOMPLETE
         An incomplete character was found in the input sequence.
 
+    iconv.ERROR_FINALIZED
+        Trying to use an already-finalized converter. This usually means
+        that the user was tweaking the garbage collector private methods.
+
     iconv.ERROR_UNKNOWN
         There was an unknown error.
 
