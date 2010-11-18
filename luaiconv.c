@@ -65,6 +65,7 @@
 #define ERROR_INVALID       2
 #define ERROR_INCOMPLETE    3
 #define ERROR_UNKNOWN       4
+#define ERROR_FINALIZED     5
 
 
 static void push_iconv_t(lua_State *L, iconv_t cd) {
@@ -77,9 +78,7 @@ static void push_iconv_t(lua_State *L, iconv_t cd) {
 static iconv_t get_iconv_t(lua_State *L, int i) {
     if (luaL_checkudata(L, i, ICONV_TYPENAME) != NULL) {
         iconv_t cd = UNBOXPTR(L, i);
-        if (cd == (iconv_t) NULL)
-            luaL_error(L, "attempt to use an invalid " ICONV_TYPENAME);
-        return cd;
+        return cd;  /* May be NULL. This must be checked by the caller. */
     }
     luaL_argerror(L, i, lua_pushfstring(L, ICONV_TYPENAME " expected, got %s",
         luaL_typename(L, i)));
@@ -109,6 +108,12 @@ static int Liconv(lua_State *L) {
     size_t obleft = obsize;
     size_t ret = -1;
     int hasone = 0;
+
+    if (cd == NULL) {
+        lua_pushstring(L, "");
+        lua_pushnumber(L, ERROR_FINALIZED);
+        return 2;
+    }
 
     outbuf = (char*) malloc(obsize * sizeof(char));
     if (outbuf == NULL) {
@@ -192,8 +197,13 @@ static int Liconvlist(lua_State *L) {
 
 static int Liconv_close(lua_State *L) {
     iconv_t cd = get_iconv_t(L, 1);
-    if (iconv_close(cd) == 0)
+    if (cd != NULL && iconv_close(cd) == 0) {
+        /* Mark the pointer as freed, preventing interpreter crashes
+           if the user forces __gc to be called twice. */
+        void **ptr = lua_touserdata(L, 1);
+        *ptr = NULL;
         lua_pushboolean(L, 1);  /* ok */
+    }
     else
         lua_pushnil(L);         /* erro */
     return 1;
@@ -223,6 +233,7 @@ int luaopen_iconv(lua_State *L) {
     TBL_SET_INT_CONST(L, "ERROR_NO_MEMORY",   ERROR_NO_MEMORY);
     TBL_SET_INT_CONST(L, "ERROR_INVALID",     ERROR_INVALID);
     TBL_SET_INT_CONST(L, "ERROR_INCOMPLETE",  ERROR_INCOMPLETE);
+    TBL_SET_INT_CONST(L, "ERROR_FINALIZED",   ERROR_FINALIZED);
     TBL_SET_INT_CONST(L, "ERROR_UNKNOWN",     ERROR_UNKNOWN);
 
     lua_pushliteral(L, "VERSION");
