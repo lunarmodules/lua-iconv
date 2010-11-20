@@ -200,7 +200,7 @@ static int Liconv_close(lua_State *L) {
 }
 
 
-static const luaL_reg iconv_funcs[] = {
+static const luaL_Reg iconv_funcs[] = {
     { "open",   Liconv_open },
     { "new",    Liconv_open },
     { "iconv",  Liconv },
