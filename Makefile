@@ -34,7 +34,7 @@ INSTALL_PATH=$$(pkg-config --variable=INSTALL_CMOD lua)
 all: iconv.so
 
 iconv.so: luaiconv.o
-	$(LD) $$(pkg-config lua --libs) $(LDFLAGS) luaiconv.o -o iconv.so
+	$(LD) luaiconv.o $$(pkg-config lua --libs) $(LDFLAGS) -o iconv.so
 .c.o:
 	$(CC) $(CFLAGS) -c $<
 
