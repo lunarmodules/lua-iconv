@@ -90,7 +90,11 @@ static int Liconv_open(lua_State *L) {
 
 static int Liconv(lua_State *L) {
     iconv_t cd = get_iconv_t(L, 1);
+#if (LUA_VERSION_NUM < 502)
+    size_t ibleft = lua_objlen(L, 2);
+#else
     size_t ibleft = lua_rawlen(L, 2);
+#endif
     char *inbuf = (char*) luaL_checkstring(L, 2);
     char *outbuf;
     char *outbufs;
