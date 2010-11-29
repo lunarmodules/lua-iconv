@@ -216,7 +216,11 @@ static const luaL_reg iconv_funcs[] = {
 
 
 int luaopen_iconv(lua_State *L) {
+#if (LUA_VERSION_NUM < 502)
+    luaL_register(L, LIB_NAME, iconv_funcs);
+#else
     luaL_newlib(L, iconv_funcs);
+#endif
 
     TBL_SET_INT_CONST(L, ERROR_NO_MEMORY);
     TBL_SET_INT_CONST(L, ERROR_INVALID);
