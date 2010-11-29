@@ -26,15 +26,15 @@
 CC=gcc
 LD=ld
 
-CFLAGS += $$(pkg-config lua --cflags) -fPIC -Wall
-LDFLAGS += -shared $$(pkg-config lua --libs)
+CFLAGS+=-fPIC -Wall
+LDFLAGS+=-shared
 
-INSTALL_PATH = $$(pkg-config --variable=INSTALL_CMOD lua)
+INSTALL_PATH=$$(pkg-config --variable=INSTALL_CMOD lua)
 
 all: iconv.so
 
 iconv.so: luaiconv.o
-	$(LD) $(LDFLAGS) luaiconv.o -o iconv.so
+	$(LD) $$(pkg-config lua --libs) $(LDFLAGS) luaiconv.o -o iconv.so
 .c.o:
 	$(CC) $(CFLAGS) -c $<
 
