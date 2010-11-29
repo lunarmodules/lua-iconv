@@ -1,4 +1,4 @@
-require "iconv"
+local iconv = require("iconv")
 
 -- Set your terminal encoding here
 -- local termcs = "iso-8859-1"
@@ -97,3 +97,14 @@ check_one(termcs, "utf8", utf8)
 check_one(termcs, "utf16", utf16)
 check_one(termcs, "EBCDIC-CP-ES", ebcdic)
 
+
+-- The library must never crash the interpreter, even if the user tweaks
+-- with the garbage collector methods.
+local cd = iconv.new("iso-8859-1", "utf-8")
+local _, e = cd:iconv("atenção")
+assert(e == nil, "Unexpected conversion error")
+local gc = getmetatable(cd).__gc
+gc(cd)
+local _, e = cd:iconv("atenção")
+assert(e == iconv.ERROR_FINALIZED, "Failed to detect double-freed objects")
+gc(cd)

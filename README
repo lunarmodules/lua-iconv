@@ -11,8 +11,8 @@ sequence of corresponding characters in another codeset. The codesets
 are those specified in the iconv.new() call that returned the conversion
 descriptor, cd.
 
-Lua-iconv 6 and later *requires* Lua 5.1. If you are using Lua 5.0, please
-use the first release (lua-iconv-r1).
+Lua-iconv 7 and later *requires* Lua 5.2. If you are using Lua 5.1, please
+use the release 6; For Lua 5.0, use the first release (lua-iconv-r1).
 
 Details on iconv may be obtained in the Open Group's interface definition
 (http://www.opengroup.org/onlinepubs/007908799/xsh/iconv.h.html).
@@ -39,7 +39,7 @@ untar the distribution package and, within the program directory, type:
     make install
 
 as root. The library will be compiled and installed on the in the correct
-path (which is defined in lua5.1.pc). Compiling on systems without pkg-config
+path (which is defined in lua5.2.pc). Compiling on systems without pkg-config
 requires manual changes in the Makefile (this includes Windows).
 
 
@@ -49,7 +49,7 @@ requires manual changes in the Makefile (this includes Windows).
 Lua-iconv is a shared library that must be loaded in the Lua interpreter
 before use. From Lua 5.1 and later, you can simply do a
 
-    require "iconv"
+    local iconv = require("iconv")
 
 call to load up the library (that, of course, must be installed in a
 directory from package.cpath).
@@ -87,6 +87,10 @@ directory from package.cpath).
 
     iconv.ERROR_INCOMPLETE
         An incomplete character was found in the input sequence.
+
+    iconv.ERROR_FINALIZED
+        Trying to use an already-finalized converter. This usually means
+        that the user was tweaking the garbage collector private methods.
 
     iconv.ERROR_UNKNOWN
         There was an unknown error.
