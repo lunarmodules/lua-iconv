@@ -1,5 +1,5 @@
 Lua-iconv: performs character set conversions in Lua
-(c) 2005-10 Alexandre Erwin Ittner <alexandre@ittner.com.br>
+(c) 2005-11 Alexandre Erwin Ittner <alexandre@ittner.com.br>
 Project page: http://ittner.github.com/lua-iconv/
 
 
@@ -11,8 +11,8 @@ sequence of corresponding characters in another codeset. The codesets
 are those specified in the iconv.new() call that returned the conversion
 descriptor, cd.
 
-Lua-iconv 7 and later *requires* Lua 5.2. If you are using Lua 5.1, please
-use the release 6; For Lua 5.0, use the first release (lua-iconv-r1).
+Lua-iconv 7 *requires* Lua 5.1 or Lua 5.2. For Lua 5.0, use the first
+release (lua-iconv-r1).
 
 Details on iconv may be obtained in the Open Group's interface definition
 (http://www.opengroup.org/onlinepubs/007908799/xsh/iconv.h.html).
@@ -39,7 +39,7 @@ untar the distribution package and, within the program directory, type:
     make install
 
 as root. The library will be compiled and installed on the in the correct
-path (which is defined in lua5.2.pc). Compiling on systems without pkg-config
+path (which is defined in lua5.x.pc). Compiling on systems without pkg-config
 requires manual changes in the Makefile (this includes Windows).
 
 
@@ -47,7 +47,7 @@ requires manual changes in the Makefile (this includes Windows).
 === Loading and initialization ===
 
 Lua-iconv is a shared library that must be loaded in the Lua interpreter
-before use. From Lua 5.1 and later, you can simply do a
+before use. You can simply do a
 
     local iconv = require("iconv")
 
@@ -102,7 +102,7 @@ Lua-iconv is copyrighted free software: it can be used for both academic
 and commercial purposes at absolutely no cost. There are no royalties
 or GNU-like "copyleft" restrictions. The legal details are below:
 
-   Lua-iconv is (c) 2005-10 Alexandre Erwin Ittner
+   Lua-iconv is (c) 2005-11 Alexandre Erwin Ittner
 
    Permission is hereby granted, free of charge, to any person obtaining
    a copy of this software and associated documentation files (the

@@ -1,6 +1,6 @@
 /*
  * luaiconv - Performs character set conversions in Lua
- * (c) 2005-10 Alexandre Erwin Ittner <alexandre@ittner.com.br>
+ * (c) 2005-11 Alexandre Erwin Ittner <alexandre@ittner.com.br>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -38,6 +38,16 @@
 #define LIB_NAME                "iconv"
 #define LIB_VERSION             LIB_NAME " 7"
 #define ICONV_TYPENAME          "iconv_t"
+
+#if LUA_VERSION_NUM < 501
+ #error "Unsuported Lua version. You must use Lua >= 5.1"
+#endif
+
+#if LUA_VERSION_NUM < 502
+ #define luaL_newlib(L, f)  { lua_newtable(L); luaL_register(L, NULL, f); }
+ #define lua_rawlen(L, i)   lua_objlen(L, i)
+#endif
+
 
 #define BOXPTR(L, p)   (*(void**)(lua_newuserdata(L, sizeof(void*))) = (p))
 #define UNBOXPTR(L, i) (*(void**)(lua_touserdata(L, i)))
