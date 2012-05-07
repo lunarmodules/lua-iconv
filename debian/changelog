@@ -1,3 +1,9 @@
+lua-iconv (7-1) unstable; urgency=low
+
+  * Update package for lua-iconv 7 + Lua-5.2
+
+ -- Alexandre Erwin Ittner <alexandre@ittner.com.br>  Sun, 06 May 2012 22:35:22 -0300
+
 lua-iconv (6-3) unstable; urgency=low
 
   * debian/control: Conflicts, Provides, and Replaces lua-iconv

@@ -2,16 +2,16 @@ Source: lua-iconv
 Section: interpreters
 Priority: optional
 Maintainer: Jon Bernard <jbernard@debian.org>
-Build-Depends: debhelper (>= 7), liblua5.1-dev, lua5.1, pkg-config
+Build-Depends: debhelper (>= 7), liblua5.2-dev, lua5.2, pkg-config
 Standards-Version: 3.8.2
-Vcs-Svn: svn://svn.debian.org/pkg-lua/packages/lua-iconv
-Vcs-Browser: http://svn.debian.org/viewsvn/pkg-lua/packages/lua-iconv
-Homepage: http://luaforge.net/projects/lua-iconv/
+Vcs-Git: https://github.com/ittner/lua-iconv.git
+Vcs-Browser: https://github.com/ittner/lua-iconv.git
+Homepage: http://ittner.github.com/lua-iconv/
 
-Package: liblua5.1-iconv0
+Package: liblua5.2-iconv0
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: lua5.1
+Recommends: lua5.2
 Conflicts: lua-iconv
 Provides: lua-iconv
 Replaces: lua-iconv
