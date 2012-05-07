@@ -100,7 +100,11 @@ static int Liconv_open(lua_State *L) {
 
 static int Liconv(lua_State *L) {
     iconv_t cd = get_iconv_t(L, 1);
+#if (LUA_VERSION_NUM < 502)
+    size_t ibleft = lua_objlen(L, 2);
+#else
     size_t ibleft = lua_rawlen(L, 2);
+#endif
     char *inbuf = (char*) luaL_checkstring(L, 2);
     char *outbuf;
     char *outbufs;
@@ -222,7 +226,11 @@ static const luaL_Reg iconv_funcs[] = {
 
 
 int luaopen_iconv(lua_State *L) {
+#if (LUA_VERSION_NUM < 502)
+    luaL_register(L, LIB_NAME, iconv_funcs);
+#else
     luaL_newlib(L, iconv_funcs);
+#endif
 
     TBL_SET_INT_CONST(L, ERROR_NO_MEMORY);
     TBL_SET_INT_CONST(L, ERROR_INVALID);
