@@ -21,9 +21,9 @@ Details on iconv may be obtained in the Open Group's interface definition
 
 === Download and installation ===
 
-Lua-iconv can be obtained from its LuaForge project page 
-(http://luaforge.net/projects/lua-iconv/), from a LuaRocks server or from
-some Linux distributions which already provide it (eg. Debian).
+Lua-iconv can be obtained from its GitHub project page
+(https://github.com/ittner/lua-iconv/downloads), from a LuaRocks server or
+from some Linux distributions which already provide it (eg. Debian).
 
 Unless you downloaded a compiled package, you must build the library for
 your system. If you have LuaRocks installed, all the process is automatic;
