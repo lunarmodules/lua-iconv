@@ -35,8 +35,8 @@ sequence of corresponding characters in another codeset. The codesets
 are those specified in the iconv.new() call that returned the conversion
 descriptor, cd.
 </p>
-<p>Lua-iconv 6 and later *requires* Lua 5.1. If you are using Lua 5.0, please
-use the first release (lua-iconv-r1).
+<p>Lua-iconv 7 *requires* Lua 5.1 or Lua 5.2. For Lua 5.0, use the first
+release (lua-iconv-r1).
 </p>
 <p>Details on iconv may be obtained in the Open Group's interface definition
 (<a href="http://www.opengroup.org/onlinepubs/007908799/xsh/iconv.h.html">http://www.opengroup.org/onlinepubs/007908799/xsh/iconv.h.html</a>).
@@ -45,9 +45,9 @@ use the first release (lua-iconv-r1).
 
 <h2 id="download-and-installation">Download and installation</h2>
 
-<p>Lua-iconv can be obtained from its LuaForge project page 
-(<a href="http://luaforge.net/projects/lua-iconv/">http://luaforge.net/projects/lua-iconv/</a>), from a LuaRocks server or from
-some Linux distributions which already provide it (eg. Debian).
+<p>Lua-iconv can be obtained from its GitHub project page
+(<a href="https://github.com/ittner/lua-iconv/downloads">https://github.com/ittner/lua-iconv/downloads</a>), from a LuaRocks server or
+from some Linux distributions which already provide it (eg. Debian).
 </p>
 <p>Unless you downloaded a compiled package, you must build the library for
 your system. If you have LuaRocks installed, all the process is automatic;
@@ -63,7 +63,7 @@ untar the distribution package and, within the program directory, type:
 <pre>    make install
 
 </pre><p>as root. The library will be compiled and installed on the in the correct
-path (which is defined in lua5.1.pc). Compiling on systems without pkg-config
+path (which is defined in lua5.x.pc). Compiling on systems without pkg-config
 requires manual changes in the Makefile (this includes Windows).
 </p>
 
@@ -71,9 +71,9 @@ requires manual changes in the Makefile (this includes Windows).
 <h2 id="loading-and-initialization">Loading and initialization</h2>
 
 <p>Lua-iconv is a shared library that must be loaded in the Lua interpreter
-before use. From Lua 5.1 and later, you can simply do a
+before use. You can simply do a
 </p>
-<pre>    require "iconv"
+<pre>    local iconv = require("iconv")
 
 </pre><p>call to load up the library (that, of course, must be installed in a
 directory from package.cpath).
@@ -112,6 +112,10 @@ directory from package.cpath).
     iconv.ERROR_INCOMPLETE
         An incomplete character was found in the input sequence.
 
+    iconv.ERROR_FINALIZED
+        Trying to use an already-finalized converter. This usually means
+        that the user was tweaking the garbage collector private methods.
+
     iconv.ERROR_UNKNOWN
         There was an unknown error.
 
@@ -122,7 +126,7 @@ directory from package.cpath).
 and commercial purposes at absolutely no cost. There are no royalties
 or GNU-like "copyleft" restrictions. The legal details are below:
 </p>
-<pre>   Lua-iconv is (c) 2005-10 Alexandre Erwin Ittner
+<pre>   Lua-iconv is (c) 2005-11 Alexandre Erwin Ittner
 
    Permission is hereby granted, free of charge, to any person obtaining
    a copy of this software and associated documentation files (the
