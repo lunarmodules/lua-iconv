@@ -7,7 +7,7 @@ version = "7"
 
 source = {
   url = "https://github.com/downloads/ittner/lua-iconv/lua-iconv-7.tar.gz",
-  md5 = "b7d687cb7e6644ea32903a1451d9f46e"
+  md5 = "8a38b4e6ac8a9290093898793d16fe4b"
 }
 
 description = {
