@@ -3,7 +3,7 @@
 -- rockspec based uppon the file provided by DarkGod <darkgod at net-core.org>
 
 package = "lua-iconv"
-version = "7"
+version = "7-1"
 
 source = {
   url = "https://github.com/downloads/ittner/lua-iconv/lua-iconv-7.tar.gz",
