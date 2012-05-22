@@ -147,13 +147,14 @@ static int Liconv(lua_State *L) {
                 return 2; /* Unknown error */
             }
         }
-    } while (ret != (size_t) 0);
+    } while (ret == (size_t) -1);
 
     lua_pushlstring(L, outbufs, obsize - obleft);
     if (hasone == 1)
         lua_concat(L, 2);
     free(outbufs);
-    return 1;   /* Done */
+    lua_pushnil(L);
+    return 2;   /* Done */
 }
 
 
