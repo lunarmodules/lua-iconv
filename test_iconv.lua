@@ -1,3 +1,5 @@
+-- -*- coding: utf-8 -*-
+
 local iconv = require("iconv")
 
 -- Set your terminal encoding here
@@ -108,3 +110,15 @@ gc(cd)
 local _, e = cd:iconv("atenção")
 assert(e == iconv.ERROR_FINALIZED, "Failed to detect double-freed objects")
 gc(cd)
+
+
+-- Test expected return values
+local cd = iconv.new("ascii", "utf-8")
+local _, e = cd:iconv("atenção")
+assert(e == iconv.ERROR_INVALID, "Unexpected return value for invalid conversion")
+
+
+local cd = iconv.new("iso-8859-1", "utf-8")
+local s, e = cd:iconv("atenção")
+assert(s == "aten\231\227o", "Unexpected result for valid conversion")
+assert(e == nil, "Unexpected return value for valid conversion")
