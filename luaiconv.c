@@ -40,7 +40,7 @@
 #define ICONV_TYPENAME          "iconv_t"
 
 #if LUA_VERSION_NUM < 501
- #error "Unsuported Lua version. You must use Lua >= 5.1"
+ #error "Unsupported Lua version. You must use Lua >= 5.1"
 #endif
 
 #if LUA_VERSION_NUM < 502
@@ -67,14 +67,16 @@
 
 
 
-static void push_iconv_t(lua_State *L, iconv_t cd) {
+static void push_iconv_t(lua_State *L, iconv_t cd)
+{
     BOXPTR(L, cd);
     luaL_getmetatable(L, ICONV_TYPENAME);
     lua_setmetatable(L, -2);
 }
 
 
-static iconv_t get_iconv_t(lua_State *L, int i) {
+static iconv_t get_iconv_t(lua_State *L, int i)
+{
     if (luaL_checkudata(L, i, ICONV_TYPENAME) != NULL) {
         iconv_t cd = UNBOXPTR(L, i);
         return cd;  /* May be NULL. This must be checked by the caller. */
@@ -85,7 +87,8 @@ static iconv_t get_iconv_t(lua_State *L, int i) {
 }
 
 
-static int Liconv_open(lua_State *L) {
+static int Liconv_open(lua_State *L)
+{
     const char *tocode = luaL_checkstring(L, 1);
     const char *fromcode = luaL_checkstring(L, 2);
     iconv_t cd = iconv_open(tocode, fromcode);
@@ -104,7 +107,8 @@ static int Liconv_open(lua_State *L) {
  */
 #define CONV_BUF_SIZE 256
 
-static int Liconv(lua_State *L) {
+static int Liconv(lua_State *L)
+{
     iconv_t cd = get_iconv_t(L, 1);
     size_t ibleft = lua_rawlen(L, 2);
     char *inbuf = (char*) luaL_checkstring(L, 2);
@@ -155,7 +159,8 @@ static int Liconv(lua_State *L) {
 
 #ifdef HAS_ICONVLIST /* a GNU extension? */
 
-static int push_one(unsigned int cnt, char *names[], void *data) {
+static int push_one(unsigned int cnt, char *names[], void *data)
+{
     lua_State *L = (lua_State*) data;
     int n = (int) lua_tonumber(L, -1);
     int i;
@@ -175,7 +180,8 @@ static int push_one(unsigned int cnt, char *names[], void *data) {
 }
 
 
-static int Liconvlist(lua_State *L) {
+static int Liconvlist(lua_State *L)
+{
     lua_newtable(L);
     lua_pushnumber(L, 1);
 
@@ -190,7 +196,8 @@ static int Liconvlist(lua_State *L) {
 #endif
 
 
-static int Liconv_close(lua_State *L) {
+static int Liconv_close(lua_State *L)
+{
     iconv_t cd = get_iconv_t(L, 1);
     if (cd != NULL && iconv_close(cd) == 0) {
         /* Mark the pointer as freed, preventing interpreter crashes
@@ -216,7 +223,8 @@ static const luaL_Reg iconv_funcs[] = {
 };
 
 
-int luaopen_iconv(lua_State *L) {
+int luaopen_iconv(lua_State *L)
+{
     luaL_newlib(L, iconv_funcs);
 
     TBL_SET_INT_CONST(L, ERROR_NO_MEMORY);
