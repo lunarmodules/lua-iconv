@@ -96,18 +96,22 @@ static int Liconv_open(lua_State *L) {
     return 1;
 }
 
+/* Use a fixed-size buffer in the stack to avoid a lot of small mallocs
+ * and prevent memory fragmentation. This should not be a problem in any
+ * contemporary general purpose system but, if you are running in a very
+ * limited stack system you may use a smaller buffer, but the luaL_Buffer
+ * will compensate this with more reallocs and memcpys.
+ */
 #define CONV_BUF_SIZE 256
 
 static int Liconv(lua_State *L) {
     iconv_t cd = get_iconv_t(L, 1);
     size_t ibleft = lua_rawlen(L, 2);
     char *inbuf = (char*) luaL_checkstring(L, 2);
-    char *outbuf;
-    char *outbufs;
-    size_t obsize = (ibleft > CONV_BUF_SIZE) ? ibleft : CONV_BUF_SIZE; 
-    size_t obleft = obsize;
+    char outbufs[CONV_BUF_SIZE];
+    char *outbuf = outbufs;
+    size_t obleft = CONV_BUF_SIZE;
     size_t ret = -1;
-    int hasone = 0;
 
     if (cd == NULL) {
         lua_pushstring(L, "");
@@ -115,44 +119,34 @@ static int Liconv(lua_State *L) {
         return 2;
     }
 
-    outbuf = (char*) malloc(obsize * sizeof(char));
-    if (outbuf == NULL) {
-        lua_pushstring(L, "");
-        lua_pushnumber(L, ERROR_NO_MEMORY);
-        return 2;
-    }
-    outbufs = outbuf;
+    luaL_Buffer b;
+    luaL_buffinit(L, &b);
 
     do {
         ret = iconv(cd, &inbuf, &ibleft, &outbuf, &obleft);
         if (ret == (size_t)(-1)) {
-            lua_pushlstring(L, outbufs, obsize - obleft);
-            if (hasone == 1)
-                lua_concat(L, 2);
-            hasone = 1;
+            luaL_addlstring(&b, outbufs, CONV_BUF_SIZE - obleft);
             if (errno == EILSEQ) {
+                luaL_pushresult(&b);
                 lua_pushnumber(L, ERROR_INVALID);
-                free(outbufs);
                 return 2;   /* Invalid character sequence */
             } else if (errno == EINVAL) {
+                luaL_pushresult(&b);
                 lua_pushnumber(L, ERROR_INCOMPLETE);
-                free(outbufs);
                 return 2;   /* Incomplete character sequence */
             } else if (errno == E2BIG) {
-                obleft = obsize;    
+                obleft = CONV_BUF_SIZE;
                 outbuf = outbufs;
             } else {
+                luaL_pushresult(&b);
                 lua_pushnumber(L, ERROR_UNKNOWN);
-                free(outbufs);
                 return 2; /* Unknown error */
             }
         }
     } while (ret == (size_t) -1);
 
-    lua_pushlstring(L, outbufs, obsize - obleft);
-    if (hasone == 1)
-        lua_concat(L, 2);
-    free(outbufs);
+    luaL_addlstring(&b, outbufs, CONV_BUF_SIZE - obleft);
+    luaL_pushresult(&b);
     lua_pushnil(L);
     return 2;   /* Done */
 }
