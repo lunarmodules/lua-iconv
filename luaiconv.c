@@ -116,6 +116,7 @@ static int Liconv(lua_State *L)
     char *outbuf = outbufs;
     size_t obleft = CONV_BUF_SIZE;
     size_t ret = -1;
+    luaL_Buffer b;
 
     if (cd == NULL) {
         lua_pushstring(L, "");
@@ -123,7 +124,6 @@ static int Liconv(lua_State *L)
         return 2;
     }
 
-    luaL_Buffer b;
     luaL_buffinit(L, &b);
 
     do {
