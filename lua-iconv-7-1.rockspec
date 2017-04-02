@@ -42,7 +42,14 @@ build = {
    },
    platforms = {
       cygwin = {
-         modules = {
+          modules = {
+            iconv = {
+               libraries = {"iconv"}
+            }
+         }
+      },
+      macosx = {
+          modules = {
             iconv = {
                libraries = {"iconv"}
             }
