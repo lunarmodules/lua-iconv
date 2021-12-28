@@ -18,7 +18,7 @@ description = {
      in another codeset.
    ]],
    license = "MIT/X11",
-   homepage = "http://ittner.github.com/lua-iconv/"
+   homepage = "https://github.com/ittner/lua-iconv/"
 }
 
 dependencies = {
