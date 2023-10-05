@@ -76,7 +76,7 @@ local ebcdic = "\193\150\64\147\150\149\135\133\107\64\129\150\64\147\164\129"
 .. "\37"
 
 
-function check_one(to, from, text)
+local function check_one(to, from, text)
   print("\n-- Testing conversion from " .. from .. " to " .. to)
   local cd = iconv.new(to .. "//TRANSLIT", from)
   assert(cd, "Failed to create a converter object.")
@@ -102,23 +102,24 @@ check_one(termcs, "EBCDIC-CP-ES", ebcdic)
 
 -- The library must never crash the interpreter, even if the user tweaks
 -- with the garbage collector methods.
-local cd = iconv.new("iso-8859-1", "utf-8")
-local _, e = cd:iconv("atenção")
+local _, e, cd, s, gc
+cd = iconv.new("iso-8859-1", "utf-8")
+_, e = cd:iconv("atenção")
 assert(e == nil, "Unexpected conversion error")
-local gc = getmetatable(cd).__gc
+gc = getmetatable(cd).__gc
 gc(cd)
-local _, e = cd:iconv("atenção")
+_, e = cd:iconv("atenção")
 assert(e == iconv.ERROR_FINALIZED, "Failed to detect double-freed objects")
 gc(cd)
 
 
 -- Test expected return values
-local cd = iconv.new("ascii", "utf-8")
-local _, e = cd:iconv("atenção")
+cd = iconv.new("ascii", "utf-8")
+_, e = cd:iconv("atenção")
 assert(e == iconv.ERROR_INVALID, "Unexpected return value for invalid conversion")
 
 
-local cd = iconv.new("iso-8859-1", "utf-8")
-local s, e = cd:iconv("atenção")
+cd = iconv.new("iso-8859-1", "utf-8")
+s, e = cd:iconv("atenção")
 assert(s == "aten\231\227o", "Unexpected result for valid conversion")
 assert(e == nil, "Unexpected return value for valid conversion")
