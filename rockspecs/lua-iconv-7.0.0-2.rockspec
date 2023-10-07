@@ -6,7 +6,7 @@ package = "lua-iconv"
 version = "7.0.0-2"
 
 source = {
-  url = "https://github.com/lunarmodules/lua-iconv/archive/refs/tags/v7.0.0.tar.gz",
+  url = "https://github.com/lunarmodules/lua-iconv/archive/v7.0.0/lua-iconv-7.0.0.tar.gz",
 }
 
 description = {
