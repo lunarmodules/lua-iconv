@@ -76,20 +76,30 @@ local ebcdic = "\193\150\64\147\150\149\135\133\107\64\129\150\64\147\164\129"
 .. "\37"
 
 
+local function ErrMsg(errno)
+  if errno == iconv.ERROR_INCOMPLETE then
+    return "Incomplete input."
+  elseif errno == iconv.ERROR_INVALID then
+    return "Invalid input."
+  elseif errno == iconv.ERROR_NO_MEMORY then
+    return "Failed to allocate memory."
+  elseif errno == iconv.ERROR_UNKNOWN then
+    return "There was an unknown error."
+  elseif errno == iconv.FINALIZED then
+    return "Handle was already finalized."
+  end
+  return "Unknown error: "..tostring(errno)
+end
+
+
 local function check_one(to, from, text)
   print("\n-- Testing conversion from " .. from .. " to " .. to)
-  local cd = iconv.new(to .. "//TRANSLIT", from)
-  assert(cd, "Failed to create a converter object.")
+  local cd, errno = iconv.new(to .. "//TRANSLIT", from)
+  assert(cd, "Failed to create a converter object: " .. ErrMsg(errno))
   local ostr, err = cd:iconv(text)
 
-  if err == iconv.ERROR_INCOMPLETE then
-    print("ERROR: Incomplete input.")
-  elseif err == iconv.ERROR_INVALID then
-    print("ERROR: Invalid input.")
-  elseif err == iconv.ERROR_NO_MEMORY then
-    print("ERROR: Failed to allocate memory.")
-  elseif err == iconv.ERROR_UNKNOWN then
-    print("ERROR: There was an unknown error.")
+  if err then
+    print("ERROR: " .. ErrMsg(err))
   end
   print(ostr)
 end

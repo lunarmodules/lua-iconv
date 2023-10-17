@@ -92,11 +92,17 @@ static int Liconv_open(lua_State *L)
     const char *tocode = luaL_checkstring(L, 1);
     const char *fromcode = luaL_checkstring(L, 2);
     iconv_t cd = iconv_open(tocode, fromcode);
-    if (cd != (iconv_t)(-1))
+    if (cd != (iconv_t)(-1)) {
         push_iconv_t(L, cd);    /* ok */
-    else
+        return 1;
+    } else {
         lua_pushnil(L);         /* error */
-    return 1;
+        if (errno == EINVAL)
+            lua_pushnumber(L, ERROR_INVALID);
+        else
+            lua_pushnumber(L, ERROR_UNKNOWN);
+        return 2;
+    };
 }
 
 /* Use a fixed-size buffer in the stack to avoid a lot of small mallocs
@@ -207,7 +213,7 @@ static int Liconv_close(lua_State *L)
         lua_pushboolean(L, 1);  /* ok */
     }
     else
-        lua_pushnil(L);         /* error */
+        lua_pushnil(L);         /* error, called from __gc, so no need for error messsage */
     return 1;
 }
 
