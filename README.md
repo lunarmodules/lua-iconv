@@ -55,14 +55,29 @@ call to load up the library (that, of course, must be installed in a directory f
 ## API documentation
 
 ```lua
-cd = iconv.new(to, from)
-cd = iconv.open(to, from)
+cd, err = iconv.new(to, from)
+cd, err = iconv.open(to, from)
 ```
 
 Opens a new conversion descriptor, from the 'from' charset to the 'to' charset.
 Concatenating "//TRANSLIT" to the first argument will enable character transliteration and concatenating "//IGNORE" to the first argument will cause iconv to ignore any invalid characters found in the input string.
 
-This function returns a new converter or nil on error.
+The error code, may have any of the following values:
+
+* `nil`
+
+    No error. Creation was successful.
+
+* `iconv.ERROR_INVALID`
+
+    The conversion from `from` to `to` is not supported by the implementation.
+
+* `iconv.ERROR_UNKNOWN`
+
+    There was an unknown error.
+
+
+This function returns a new converter or nil+err on error.
 
 
 ```lua
