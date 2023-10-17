@@ -3,11 +3,10 @@
 -- rockspec based uppon the file provided by DarkGod <darkgod at net-core.org>
 
 package = "lua-iconv"
-version = "7-1"
+version = "7.0.0-2"
 
 source = {
-  url = "https://github.com/downloads/ittner/lua-iconv/lua-iconv-7.tar.gz",
-  md5 = "8a38b4e6ac8a9290093898793d16fe4b"
+  url = "https://github.com/lunarmodules/lua-iconv/archive/v7.0.0/lua-iconv-7.0.0.tar.gz",
 }
 
 description = {
@@ -18,7 +17,7 @@ description = {
      in another codeset.
    ]],
    license = "MIT/X11",
-   homepage = "http://ittner.github.com/lua-iconv/"
+   homepage = "https://github.com/lunarmodules/lua-iconv/"
 }
 
 dependencies = {
@@ -42,14 +41,7 @@ build = {
    },
    platforms = {
       cygwin = {
-          modules = {
-            iconv = {
-               libraries = {"iconv"}
-            }
-         }
-      },
-      macosx = {
-          modules = {
+         modules = {
             iconv = {
                libraries = {"iconv"}
             }
