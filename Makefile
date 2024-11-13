@@ -68,5 +68,5 @@ clean:
 	$(RM) iconv.so iconv.lo
 
 test: iconv.so test_iconv.lua
-	lua test_iconv.lua
+	$(LUABIN) test_iconv.lua
 
