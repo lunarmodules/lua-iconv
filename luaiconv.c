@@ -39,6 +39,12 @@
 #define LIB_VERSION             LIB_NAME " 7"
 #define ICONV_TYPENAME          "iconv_t"
 
+#ifdef _WIN32
+#define LUAEXPORT __declspec(dllexport)
+#else
+#define LUAEXPORT __attribute__((visibility("default")))
+#endif
+
 #if LUA_VERSION_NUM < 501
  #error "Unsupported Lua version. You must use Lua >= 5.1"
 #endif
@@ -229,7 +235,7 @@ static const luaL_Reg iconv_funcs[] = {
 };
 
 
-int luaopen_iconv(lua_State *L)
+LUAEXPORT int luaopen_iconv(lua_State *L)
 {
     luaL_newlib(L, iconv_funcs);
 
