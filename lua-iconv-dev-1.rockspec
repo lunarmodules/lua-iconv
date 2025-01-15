@@ -1,7 +1,7 @@
 local package_name = "lua-iconv"
 local package_version = "dev"
 local rockspec_revision = "1"
-local github_account_name = "lunarmodules"
+local github_account_name = "notegorkaa"
 local github_repo_name = package_name
 
 package = package_name
