@@ -54,6 +54,11 @@
  #define lua_rawlen(L, i)   lua_objlen(L, i)
 #endif
 
+#ifdef _WIN32
+#define LUAEXPORT __declspec(dllexport)
+#else
+#define LUAEXPORT __attribute__((visibility("default")))
+#endif
 
 #define BOXPTR(L, p)   (*(void**)(lua_newuserdata(L, sizeof(void*))) = (p))
 #define UNBOXPTR(L, i) (*(void**)(lua_touserdata(L, i)))
