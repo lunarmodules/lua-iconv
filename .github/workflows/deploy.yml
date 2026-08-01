@@ -2,6 +2,9 @@ name: Deploy
 
 on: [ push, workflow_dispatch ]
 
+permissions:
+  contents: read
+
 jobs:
 
   affected:
