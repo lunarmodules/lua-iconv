@@ -105,8 +105,12 @@ local function check_one(to, from, text)
 end
 
 check_one(termcs, "iso-8859-1", iso88591)
-check_one(termcs, "utf8", utf8)
-check_one(termcs, "utf16", utf16)
+check_one(termcs, "utf-8", utf8)
+check_one(termcs, "utf-16", utf16)
+-- "utf-8" and "utf-16" are the official names; "utf8" and "utf16" are aliases
+-- that are not supported by every iconv implementation.
+-- check_one(termcs, "utf8", utf8)
+-- check_one(termcs, "utf16", utf16)
 check_one(termcs, "EBCDIC-CP-ES", ebcdic)
 
 
