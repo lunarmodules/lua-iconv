@@ -1,0 +1,44 @@
+name: "Unix build"
+
+concurrency:
+  # for PR's cancel the running task, if another commit is pushed
+  group: ${{ github.workflow }} ${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+on:
+  # build on PR and push-to-master. This works for short-lived branches, and saves
+  # CPU cycles on duplicated tests.
+  # For long-lived branches that diverge, you'll want to run on all pushes, not
+  # just on push-to-master.
+  pull_request: {}
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        luaVersion: ["5.1", "5.2", "5.3", "5.4", "5.5", "luajit", "luajit-openresty"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: luarocks/gh-actions-lua@56eba09993704b908cc3c7c2753e630d18cb9696 # master
+        with:
+          luaVersion: ${{ matrix.luaVersion }}
+
+      - uses: luarocks/gh-actions-luarocks@95d2308a0aff36ad31ebadca493ed14853399842 # master
+
+      - name: Build
+        run: luarocks make lua-iconv-dev-1.rockspec
+
+      - name: Test
+        run: lua test_iconv.lua
